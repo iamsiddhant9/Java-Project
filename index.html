@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiffin Connect - Verified Meals</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        :root {
+            --light-bg: #f7faff;
+            --platform-accent: #a24ae2;
+            --primary-text: #733dd5;
+            --secondary-text: #6e5f7a;
+            --max-width: 1280px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+           font-family: "Poppins", sans-serif;
+           font-weight: 400;
+           font-style: normal;
+            background-color: var(--light-bg);
+            color: var(--primary-text);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem; /* 16px */
+            padding-right: 1rem; /* 16px */
+        }
+
+        /* --- Utility Classes --- */
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .rounded-full { border-radius: 9999px; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-2xl { border-radius: 1rem; }
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .text-center { text-align: center; }
+        .opacity-90 { opacity: 0.9; }
+        .border-accent-t-4 { border-top: 4px solid var(--platform-accent); }
+
+        /* --- Navbar --- */
+        #navbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: rgba(253, 252, 252, 0.95);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 4rem; /* 64px */
+        }
+
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            color: var(--platform-accent);
+            transition: 0.5s;
+            text-decoration: none;
+            border: none;
+            
+        }
+        .nav-logo:hover {
+            color: #590b77; /* Deeper blue hover */
+            transform: scale(1.1);
+        }
+
+        .nav-desktop-menu {
+            display: none;
+            gap: 2rem; /* 32px */
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--secondary-text);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: var(--platform-accent);
+        }
+
+        .btn-primary {
+            background-color: var(--platform-accent);
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #6d17de;
+            transform: scale(1.05);
+        }
+
+        .mobile-menu-button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            color: #6b7280;
+            transition: color 0.3s, background-color 0.3s;
+        }
+        .mobile-menu-button:hover {
+            color: var(--platform-accent);
+        }
+
+        #mobile-menu {
+            padding: 0.5rem 0;
+            background-color: white;
+        }
+        #mobile-menu a, #mobile-menu button {
+            display: block;
+            text-align: center;
+            padding: 0.5rem 0.75rem;
+            margin: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--secondary-text);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        #mobile-menu a:hover {
+            background-color: rgba(108, 17, 178, 0.1); /* platform-accent/10 */
+            color: var(--platform-accent);
+        }
+        #mobile-menu button {
+            margin-top: 0.5rem;
+            width: calc(100% - 1rem);
+        }
+
+        /* --- Hero Section --- */
+        #home {
+            min-height: 85vh;
+            background-color: rgb(235, 223, 243);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5rem 1rem;
+            border-bottom: 4px solid rgba(41, 35, 38, 0.2);
+        }
+
+        .hero-title {
+            font-size: 3rem; /* 48px */
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        .hero-title span {
+            color: var(--platform-accent);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--secondary-text);
+            margin-bottom: 2.5rem;
+            max-width: 56rem; /* Adjust later */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta-group a, .hero-cta-group button {
+            display: inline-block;
+            font-weight: 700;
+            text-decoration: none;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            margin: 40px;
+            
+            transition: all 0.5s;
+        }
+
+        .btn-cta-primary {
+            background-color: var(--platform-accent);
+            color: white;;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            
+        }
+        .btn-cta-primary:hover {
+            background-color: #6811d1;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .btn-cta-secondary {
+            border: 2px solid var(--platform-accent);
+            color: var(--platform-accent);
+            background-color: transparent;
+            margin-left: 4px;
+        }
+        .btn-cta-secondary:hover {
+            background-color: rgba(125, 15, 150, 0.1);
+            transform: translateY(-4px);
+        }
+
+        /* --- Features Section --- */
+        #features {
+            padding: 5rem 1rem;
+            background-color: white;
+        }
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .section-title span {
+            color: var(--platform-accent);
+        }
+
+        .features-grid {
+            display: grid;
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            background-color: var(--light-bg);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            border-top: 4px solid var(--platform-accent);
+        }
+        .feature-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+            background-color:rgb(154, 117, 236);
+            color: white;
+        }
+
+        .feature-icon-wrapper {
+            color: var(--platform-accent);
+            margin-bottom: 1rem;
+        }
+        .feature-icon-wrapper svg {
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .feature-card p {
+            color: var(--secondary-text);
+        }
+
+        /* --- Ordering & Delivery Section --- */
+        #ordering {
+            padding: 5rem 1rem;
+            background-color: var(--light-bg);
+        }
+
+        .content-grid {
+            display: grid;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .ordering-card {
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            background-color: white;
+        }
+
+        .delivery-card {
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            background-color: var(--platform-accent);
+            color: white;
+        }
+
+        .ordering-card h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--platform-accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .delivery-card h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .list-number {
+            color: var(--platform-accent);
+            font-weight: 800;
+            margin-right: 0.75rem;
+            font-size: 18px;
+        }
+
+        .list-title {
+            font-weight: 600;
+            font-size: 18px;
+           margin-top: 0;
+           padding-top: 0;
+
+        }
+
+        .list-description {
+            color: var(--secondary-text);
+        }
+
+        .delivery-icon-text {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .delivery-icon-text svg {
+            width: 2rem;
+            height: 2rem;
+        }
+
+        .btn-delivery-cta {
+            width: 100%;
+            background-color: white;
+            color: var(--platform-accent);
+            font-weight: 700;
+            padding: 0.75rem 1rem;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-delivery-cta:hover {
+            background-color: #f3f4f6;
+        }
+
+        /* --- Provider CTA Section (Form) --- */
+        #provider-cta {
+            padding: 5rem 1rem;
+            background-color: white;
+        }
+        .form-container {
+            max-width: 32rem;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2.5rem;
+            background-color: var(--light-bg);
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--platform-accent);
+        }
+
+        .form-container h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-container p {
+            color: var(--secondary-text);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--platform-accent);
+            box-shadow: 0 0 0 3px rgba(76, 134, 193, 0.5);
+        }
+
+        .btn-form-submit {
+            width: 100%;
+            background-color: var(--platform-accent);
+            color: white;
+            font-weight: 700;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .btn-form-submit:hover {
+            background-color: #1e40af;
+            transform: scale(1.01);
+        }
+
+        /* --- Footer --- */
+        #footer {
+            background-color: var(--primary-text);
+            color: white;
+            padding: 2.5rem 1rem;
+        }
+
+        #footer p {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: var(--platform-accent);
+        }
+
+
+        /* --- Custom Modal/Message Box --- */
+        #custom-message-box {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .message-box-content {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-width: 24rem;
+            width: 90%;
+            transform: scale(1);
+            transition: transform 0.3s;
+        }
+
+        .message-box-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-text);
+            margin-bottom: 1rem;
+        }
+
+        .message-box-content p {
+            color: var(--secondary-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-modal-close {
+            width: 100%;
+            background-color: var(--platform-accent);
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-modal-close:hover {
+            background-color: #1e40af;
+        }
+
+        /* --- Media Queries for Responsiveness --- */
+
+        /* Tablet and Desktop Styles (md: equivalent) */
+        @media (min-width: 768px) {
+            .nav-desktop-menu {
+                display: flex;
+            }
+            .mobile-menu-button {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 4.5rem; /* 72px */
+            }
+            .hero-subtitle {
+                font-size: 1.5rem; /* 24px */
+            }
+            .hero-cta-group {
+                display: flex;
+                justify-content: center;
+            }
+
+            .hero-cta-group a, .hero-cta-group button {
+                margin: 0;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .content-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .list-description {
+                font-size: 18px; /* Adjust if needed for readability */
+            }
+
+            #typewriter {
+                font-size: 28px;
+                font-weight: 400;
+                margin: 5px;
+            }
+        }
+        .cursor {
+    display: inline-block;
+    font-size: 28px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+}
+    </style>
+</head>
+<body class="bg-light-bg text-primary-text font-sans antialiased">
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <!-- Logo/Site Title -->
+                <a href="#home" class="nav-logo">
+                    Campus Cravings
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="nav-desktop-menu">
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="order.html" class="nav-link">Start Ordering</a>
+                    <a href="#delivery" class="nav-link">For Providers</a>
+                    <button onclick="window.location.href='login.html'" class="btn-primary">
+                        Sign-in
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button (Hamburger) -->
+                <button id="mobile-menu-button" type="button" class="mobile-menu-button" aria-expanded="false">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden">
+            <div class="container">
+                <a href="#features" onclick="toggleMobileMenu()">Features</a>
+                <a href="#ordering" onclick="toggleMobileMenu()">Ordering</a>
+                <a href="#delivery" onclick="toggleMobileMenu()">For Providers</a>
+                <button onclick="showMessage('Login/Sign Up initiated. Redirecting to app dashboard.'); toggleMobileMenu()" class="btn-primary">
+                    Start Ordering
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section: Platform Overview -->
+        <section id="home" class="text-center">
+            <div class="container">
+                <div class="max-w-5xl mx-auto">
+                    <h1 class="hero-title">
+                        Your <span>One-Stop Platform</span> for Verified Tiffin Meals
+                    </h1>
+                    <p class="hero-subtitle">
+                        Connecting busy individuals and institutions with the best local tiffin providers, managed with daily freshness and reliability.
+                    </p>
+                     <span id="typewriter"></span>
+                     <span class="cursor">|</span>
+                    <div class="hero-cta-group">
+                        <a href="order.html" class="btn-cta-primary">
+                            Find a Meal Today
+                        </a>
+                        <a href="#provider-cta" class="btn-cta-secondary">
+                            Join as a Provider
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section: Tiffin Management Details -->
+        <section id="features">
+            <div class="container">
+                <h2 class="section-title">
+                    Reliability & Freshness <span>Built-in</span>
+                </h2>
+                <div class="features-grid">
+                    <!-- Feature Card 1: Verified Providers -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                             <!-- Verified Icon (Checkmark in a box) -->
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3>Verified Partners</h3>
+                        <p class="text-secondary-text">We verify every tiffin provider for quality, hygiene, and timely delivery, ensuring peace of mind for every customer.</p>
+                    </div>
+
+                    <!-- Feature Card 2: Daily Menus & Limits -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <!-- Menu/Limit Icon (Clipboard with numbers) -->
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M10 16h.01"></path></svg>
+                        </div>
+                        <h3>Daily Updates & Limits</h3>
+                        <p class="text-secondary-text">Providers post daily menu updates and set quantity limits (50-100) to guarantee freshness and prevent overselling.</p>
+                    </div>
+
+                    <!-- Feature Card 3: Cutoff Times & Portions -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <!-- Clock/Customization Icon (Clock with options) -->
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3>Flexible Ordering</h3>
+                        <p class="text-secondary-text">Customers can choose full or half portions and must place their order before the daily preparation cutoff time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ordering & Delivery Section -->
+        <section id="ordering">
+            <div class="container">
+                <div class="content-grid">
+                    <!-- Ordering Process Card -->
+                    <div class="ordering-card shadow-2xl">
+                        <h2>
+                            Seamless Customer Ordering
+                        </h2>
+                        <ul style="list-style: none; padding: 0;">
+                            <li class="list-item">
+                                <span class="list-number">1.</span>
+                                <div>
+                                    <p class="list-title">Browse Daily Menus:</p>
+                                    <p class="list-description">See real-time availability from local providers, updated every morning.</p>
+                                </div>
+                            </li>
+                            <li class="list-item">
+                                <span class="list-number">2.</span>
+                                <div>
+                                    <p class="list-title">Customize Your Meal:</p>
+                                    <p class="list-description">Select your preferred portion size (full or half) to fit your needs.</p>
+                                </div>
+                            </li>
+                            <li class="list-item">
+                                <span class="list-number">3.</span>
+                                <div>
+                                    <p class="list-title">Beat the Clock:</p>
+                                    <p class="list-description">Confirm your order before the provider's cutoff time (e.g., 9:00 AM) to ensure timely preparation.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Special Delivery Option -->
+                    <div id="delivery" class="delivery-card shadow-2xl">
+                        <h2 style="color: white;">
+                            Self-Delivery for Educational Institutes
+                        </h2>
+                        <p class="opacity-90" style="font-size: 1.125rem; margin-bottom: 1.5rem;">
+                            We offer a specialized logistics option for schools, colleges, and university campuses.
+                        </p>
+                        <div class="delivery-icon-text">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            <p style="font-weight: 600; font-size: 1.25rem;">Institution-Specific Drop-offs</p>
+                        </div>
+                        <p class="opacity-90" style="margin-bottom: 1.5rem;">
+                            Providers can use the **self-delivery option** to manage bulk, pre-ordered tiffins directly to designated campus points, streamlining service and reducing costs.
+                        </p>
+                        <button onclick="window.location.href='institution.html'" class="btn-delivery-cta">
+                            Inquire About Institution Plans
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Call to Action / Provider Sign Up Section -->
+        <section id="provider-cta">
+            <div class="form-container shadow-xl">
+                <h2 class="text-center">
+                    Join Our Network as a Provider
+                </h2>
+                <p class="text-center">
+                    Grow your business by managing limits and orders efficiently on our trusted platform.
+                </p>
+                <form onsubmit="handleFormSubmission(event)">
+                    <div class="form-group">
+                        <label for="provider-name" class="form-label">Tiffin Service Name</label>
+                        <input type="text" id="provider-name" name="provider-name" required placeholder="Terna Canteen"
+                               class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="provider-email" class="form-label">Contact Email</label>
+                        <input type="email" id="provider-email" name="provider-email" required placeholder="contact@terna.com"
+                               class="form-input">
+                    </div>
+                    <button type="submit"
+                            class="btn-form-submit">
+                        Submit Provider Application
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container text-center">
+            <p>&copy; 2025 CampusCravings. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#" onclick="showMessage('Navigating to Provider Terms.')">Provider Terms</a>
+                <a href="#" onclick="showMessage('Navigating to Customer Support.')">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Modal/Message Box (Replaces alert()) -->
+    <div id="custom-message-box" class="fixed inset-0 hidden" style="display: none;">
+        <div class="message-box-content shadow-2xl">
+            <h3>Notification</h3>
+            <p id="message-text"></p>
+            <button onclick="hideMessage()" class="btn-modal-close">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- Custom Message Box Functions (Replaces alert()) ---
+
+        /**
+         * Shows a custom message box with the given text.
+         * @param {string} message - The message to display.
+         */
+        function showMessage(message) {
+            const messageBox = document.getElementById('custom-message-box');
+            document.getElementById('message-text').textContent = message;
+            messageBox.style.display = 'flex'; // Use style property for show/hide
+        }
+
+
+
+        const words = ["Made by", "Siddhant Sonarkar", "Rizwan Khan", "Vinit Wani", "Ashish Dhule"];
+let i = 0; // word index
+let j = 0; // character index
+let currentWord = '';
+let isDeleting = false;
+const speed = 150; // typing speed
+const typewriter = document.getElementById('typewriter');
+
+function type() {
+    const fullWord = words[i];
+
+    if (isDeleting) {
+        currentWord = fullWord.substring(0, j--);
+    } else {
+        currentWord = fullWord.substring(0, j++);
+    }
+
+    typewriter.textContent = currentWord;
+
+    if (!isDeleting && j === fullWord.length + 1) {
+        isDeleting = true;
+        setTimeout(type, 1000); // wait before deleting
+    } else if (isDeleting && j === 0) {
+        isDeleting = false;
+        i = (i + 1) % words.length; // move to next word
+        setTimeout(type, 500);
+    } else {
+        setTimeout(type, isDeleting ? speed / 2 : speed);
+    }
+}
+
+type();
+
+        /**
+         * Hides the custom message box.
+         */
+        function hideMessage() {
+            document.getElementById('custom-message-box').style.display = 'none'; // Use style property for show/hide
+        }
+
+        // --- Mobile Menu Toggle Logic ---
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        /**
+         * Toggles the visibility of the mobile menu.
+         */
+        function toggleMobileMenu() {
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.style.display = 'block';
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.style.display = 'none';
+            }
+        }
+
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+
+
+        // --- Form Submission Handler (Simulates provider registration) ---
+
+        /**
+         * Handles the form submission event for provider registration.
+         * @param {Event} event - The form submission event.
+         */
+        function handleFormSubmission(event) {
+            event.preventDefault();
+
+            const nameInput = document.getElementById('provider-name');
+            const emailInput = document.getElementById('provider-email');
+
+            const name = nameInput.value;
+            const email = emailInput.value;
+
+            // Simple validation
+            if (name.trim() === "" || email.trim() === "") {
+                showMessage('Please fill out both the Tiffin Service Name and Contact Email.');
+                return;
+            }
+
+            // Simulate form processing
+            showMessage(`Success! Thank you, ${name}. Your application (email: ${email}) has been received. We will contact you soon for verification.`);
+
+            // Clear the form fields
+            nameInput.value = '';
+            emailInput.value = '';
+        }
+
+        // Initialize mobile menu state correctly on load
+        document.addEventListener('DOMContentLoaded', () => {
+             // Ensure the initial state for the mobile menu is hidden
+             if (!mobileMenu.classList.contains('hidden')) {
+                 mobileMenu.classList.add('hidden');
+                 mobileMenu.style.display = 'none';
+             }
+
+             // Handle initial state of the modal
+             document.getElementById('custom-message-box').style.display = 'none';
+        });
+
+    </script>
+</body>
+</html>

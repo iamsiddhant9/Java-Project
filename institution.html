@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiffin Connect - Institutional Plans</title>
+    <style>
+        /* --- Poppins Font Import --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        /* --- CSS Variables (Updated to Purple Theme) --- */
+        :root {
+            --light-bg: #f7faff;
+            --platform-accent: #a24ae2; /* New Purple Accent */
+            --primary-text: #733dd5; /* New Darker Purple */
+            --secondary-text: #6e5f7a; /* New Muted Purple */
+            --max-width: 1280px;
+            --green-success: #2ecc71;
+            --red-alert: #e74c3c;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif; /* Updated to Poppins */
+            background-color: var(--light-bg);
+            color: var(--primary-text);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem; /* 16px */
+            padding-right: 1rem; /* 16px */
+        }
+
+        /* --- Utility Classes --- */
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .rounded-xl { border-radius: 0.75rem; }
+        .hidden { display: none !important; }
+
+        /* --- Navbar --- */
+        #navbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 4rem;
+        }
+
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            color: var(--platform-accent);
+            text-decoration: none;
+        }
+
+        /* --- Page Header / Hero for Institution Page --- */
+        #page-header {
+            padding: 4rem 1rem 4rem;
+            background-color: white;
+            border-bottom: 4px solid var(--platform-accent); /* Updated color */
+            text-align: center;
+        }
+        .header-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .header-title span {
+            color: var(--platform-accent); /* Updated color */
+        }
+        .header-subtitle {
+            font-size: 1.25rem;
+            color: var(--secondary-text); /* Updated color */
+            max-width: 48rem;
+            margin: 0 auto;
+        }
+        
+        /* --- Pricing Grid Section --- */
+        #pricing {
+            padding: 5rem 1rem;
+            background-color: var(--light-bg);
+        }
+
+        #pricing h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+        }
+
+        .pricing-grid {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: 1fr;
+        }
+
+        .price-card {
+            background-color: white;
+            padding: 2.5rem 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .price-card.featured {
+            border: 4px solid var(--platform-accent); /* Updated color */
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .price-card.featured::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--platform-accent); /* Updated color */
+            color: white;
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            letter-spacing: 0.05em;
+        }
+
+        .price-card h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--platform-accent); /* Updated color */
+        }
+        .price-card .description {
+            color: var(--secondary-text); /* Updated color */
+            margin-bottom: 1.5rem;
+            min-height: 2.5rem;
+        }
+
+        .price-card .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-text); /* Updated color */
+            margin-bottom: 2rem;
+        }
+        .price-card .price span {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--secondary-text); /* Updated color */
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        .features-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #eee;
+            color: var(--primary-text); /* Updated color */
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+        }
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+        .features-list svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.75rem;
+            color: var(--green-success);
+        }
+
+        .btn-select-plan {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--platform-accent); /* Updated color */
+            color: white;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .btn-select-plan:hover {
+            background-color: #7b2dc0; /* Darker purple hover state */
+            transform: scale(1.02);
+        }
+        
+        /* --- Contact CTA Section --- */
+        #contact-cta {
+            padding: 3rem 1rem;
+            text-align: center;
+            background-color: white;
+            border-top: 1px solid #eee;
+        }
+        #contact-cta h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-text); /* Ensure good contrast */
+        }
+
+        /* --- Footer (Minimal copy for functionality) --- */
+        #footer {
+            background-color: var(--primary-text); /* Updated color */
+            color: white;
+            padding: 2.5rem 1rem;
+        }
+        #footer p {
+            font-size: 0.875rem;
+            color: #d2c8e3; /* Adjusted footer text color for purple bg */
+            text-align: center;
+        }
+
+
+        /* --- Custom Modal/Message Box --- */
+        #custom-message-box {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            display: none;
+        }
+
+        .message-box-content {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-width: 24rem;
+            width: 90%;
+        }
+
+        .message-box-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-text); /* Updated color */
+            margin-bottom: 1rem;
+        }
+
+        .message-box-content p {
+            color: var(--secondary-text); /* Updated color */
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-modal-close {
+            width: 100%;
+            background-color: var(--platform-accent); /* Updated color */
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-modal-close:hover {
+            background-color: #7b2dc0; /* Darker purple hover state */
+        }
+
+
+        /* --- Media Queries for Responsiveness --- */
+        @media (min-width: 768px) {
+            .pricing-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 3rem;
+            }
+            .header-title {
+                font-size: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <!-- Logo/Site Title -->
+                <a href="index.html" class="nav-logo">
+                    TiffinConnect
+                </a>
+                <!-- Minimal nav links pointing back to key pages -->
+                <div style="display: flex; gap: 1rem;">
+                    <a href="find_meal.html" style="text-decoration: none; color: var(--secondary-text); padding: 0.5rem;">Find a Meal</a>
+                    <a href="join_provider.html" style="text-decoration: none; color: var(--secondary-text); padding: 0.5rem;">Join as Provider</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Page Header -->
+        <section id="page-header">
+            <div class="container">
+                <h1 class="header-title">
+                    Tiffin Plans for <span>Institutions</span>
+                </h1>
+                <p class="header-subtitle">
+                    Streamline meal logistics for your school, college, or corporate campus with guaranteed quality and reliable bulk delivery coordination.
+                </p>
+            </div>
+        </section>
+
+        <!-- Pricing Grid Section -->
+        <section id="pricing">
+            <div class="container">
+                <h2>Choose the Right Plan for Your Campus</h2>
+                <div class="pricing-grid">
+                    
+                    <!-- Pricing Card 1: Standard Campus Plan -->
+                    <div class="price-card shadow-lg">
+                        <h3>Standard Campus</h3>
+                        <p class="description">Ideal for smaller schools or single-building corporate offices.</p>
+                        
+                        <div class="price">$199 <span>/ month (Institution Fee)</span></div>
+
+                        <ul class="features-list">
+                            <li>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Access to **3 Verified Providers**
+                            </li>
+                            <li>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Dedicated **Self-Delivery Window**
+                            </li>
+                            <li>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Priority Customer Support
+                            </li>
+                            <li style="color: var(--secondary-text);">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="color: var(--red-alert);"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Limited Dietary Filter Support
+                            </li>
+                        </ul>
+                        
+                        <button onclick="handlePlanSelection('Standard Campus')" class="btn-select-plan">
+                            Inquire About This Plan
+                        </button>
+                    </div>
+
+                    <!-- Pricing Card 2: Premier District Plan (Featured) -->
+                    <div class="price-card featured shadow-xl">
+                        <h3>Premier District</h3>
+                        <p class="description">Perfect for large universities, school districts, or multi-site corporations.</p>
+
+                        <div class="price">$499 <span>/ month (Institution Fee)</span></div>
+
+                        <ul class="features-list">
+                            <li>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Access to **All Verified Providers**
+                            </li>
+                            <li>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Dedicated **Logistics Manager**
+                            </li>
+                            <li>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                **Full Dietary Filter Support** (Allergy/Vegan)
+                            </li>
+                            <li>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Consolidated Monthly Billing
+                            </li>
+                        </ul>
+
+                        <button onclick="handlePlanSelection('Premier District')" class="btn-select-plan">
+                            Inquire About This Plan
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact CTA Section -->
+        <section id="contact-cta">
+            <div class="container">
+                <h3>Ready to simplify your campus meals?</h3>
+                <p style="max-width: 40rem; margin: 0 auto 1.5rem; color: var(--secondary-text);">
+                    Contact our dedicated Institutional Sales team for a tailored quote and to schedule a logistics overview session.
+                </p>
+                <button onclick="showMessage('You clicked the Contact Sales button. Please provide your institutional email address so a sales representative can contact you.')" 
+                        class="btn-select-plan" style="width: auto; padding: 1rem 3rem;">
+                    Contact Institutional Sales
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container">
+            <p>&copy; 2025 TiffinConnect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Custom Modal/Message Box -->
+    <div id="custom-message-box">
+        <div class="message-box-content shadow-xl">
+            <h3>Institutional Inquiry</h3>
+            <p id="message-text"></p>
+            <button onclick="hideMessage()" class="btn-modal-close">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- Custom Message Box Functions (Replaces alert()) ---
+
+        /**
+         * Shows a custom message box with the given text.
+         * @param {string} message - The message to display.
+         */
+        function showMessage(message) {
+            const messageBox = document.getElementById('custom-message-box');
+            document.getElementById('message-text').innerHTML = message;
+            messageBox.style.display = 'flex';
+        }
+
+        /**
+         * Hides the custom message box.
+         */
+        function hideMessage() {
+            document.getElementById('custom-message-box').style.display = 'none';
+        }
+
+        /**
+         * Handles the selection of a pricing plan.
+         * @param {string} planName - The name of the selected plan.
+         */
+        function handlePlanSelection(planName) {
+            const message = `
+                <p>Thank you for your interest in the **${planName}** plan!</p>
+                <p>We will prioritize your request. Please click 'Contact Institutional Sales' below to share your contact information and begin the onboarding process.</p>
+            `;
+            showMessage(message);
+        }
+
+        // --- Initialization on Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+             // Ensure the initial state for the modal is hidden
+             document.getElementById('custom-message-box').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

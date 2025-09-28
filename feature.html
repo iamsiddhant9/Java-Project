@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiffin Connect - Platform Features</title>
+    <style>
+        /* --- CSS Variables and Global Styles (Copied from index.html) --- */
+        :root {
+            --light-bg: #f7faff;
+            --platform-accent: #4C86C1;
+            --primary-text: #2c3e50;
+            --secondary-text: #7f8c8d;
+            --max-width: 1280px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--primary-text);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem; /* 16px */
+            padding-right: 1rem; /* 16px */
+        }
+
+        /* --- Utility Classes --- */
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .rounded-full { border-radius: 9999px; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-2xl { border-radius: 1rem; }
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .text-center { text-align: center; }
+        .opacity-90 { opacity: 0.9; }
+        .border-accent-t-4 { border-top: 4px solid var(--platform-accent); }
+
+        /* --- Navbar --- */
+        #navbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 4rem; /* 64px */
+        }
+
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            color: var(--platform-accent);
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+        .nav-logo:hover {
+            color: #1e40af; /* Deeper blue hover */
+        }
+
+        .nav-desktop-menu {
+            display: none;
+            gap: 2rem; /* 32px */
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--secondary-text);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: var(--platform-accent);
+        }
+        /* Highlight the active link (Features) */
+        .nav-link.active {
+            color: var(--platform-accent);
+            font-weight: 700;
+            border-bottom: 2px solid var(--platform-accent);
+        }
+
+
+        .btn-primary {
+            background-color: var(--platform-accent);
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #1e40af;
+            transform: scale(1.05);
+        }
+
+        .mobile-menu-button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            color: #6b7280;
+            transition: color 0.3s, background-color 0.3s;
+        }
+        .mobile-menu-button:hover {
+            color: var(--platform-accent);
+        }
+
+        #mobile-menu {
+            padding: 0.5rem 0;
+            background-color: white;
+        }
+        #mobile-menu a, #mobile-menu button {
+            display: block;
+            text-align: center;
+            padding: 0.5rem 0.75rem;
+            margin: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--secondary-text);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        #mobile-menu a:hover, #mobile-menu a.active {
+            background-color: rgba(76, 134, 193, 0.1); /* platform-accent/10 */
+            color: var(--platform-accent);
+        }
+        #mobile-menu button {
+            margin-top: 0.5rem;
+            width: calc(100% - 1rem);
+        }
+
+        /* --- Page Header / Hero for Feature Page --- */
+        #page-header {
+            padding: 4rem 1rem 6rem;
+            background-color: white;
+            border-bottom: 4px solid var(--platform-accent);
+            text-align: center;
+        }
+        .header-title {
+            font-size: 3rem; /* 48px */
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .header-title span {
+            color: var(--platform-accent);
+        }
+        .header-subtitle {
+            font-size: 1.25rem;
+            color: var(--secondary-text);
+            max-width: 48rem;
+            margin: 0 auto;
+        }
+
+        /* --- Features Grid Section (Expanded) --- */
+        #expanded-features {
+            padding: 5rem 1rem;
+            background-color: var(--light-bg);
+        }
+        .features-grid {
+            display: grid;
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            background-color: white; /* Changed to white for contrast on light-bg */
+            padding: 2rem;
+            border-radius: 1rem; /* Slightly larger rounded corners */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            border-top: 4px solid var(--platform-accent);
+        }
+        .feature-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon-wrapper {
+            color: var(--platform-accent);
+            margin-bottom: 1rem;
+        }
+        .feature-icon-wrapper svg {
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .feature-card p {
+            color: var(--secondary-text);
+        }
+
+        /* --- Footer --- */
+        #footer {
+            background-color: var(--primary-text);
+            color: white;
+            padding: 2.5rem 1rem;
+        }
+
+        #footer p {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: var(--platform-accent);
+        }
+
+
+        /* --- Custom Modal/Message Box --- */
+        #custom-message-box {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .message-box-content {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-width: 24rem;
+            width: 90%;
+            transform: scale(1);
+            transition: transform 0.3s;
+        }
+
+        .message-box-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-text);
+            margin-bottom: 1rem;
+        }
+
+        .message-box-content p {
+            color: var(--secondary-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-modal-close {
+            width: 100%;
+            background-color: var(--platform-accent);
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-modal-close:hover {
+            background-color: #1e40af;
+        }
+
+        /* --- Media Queries for Responsiveness --- */
+
+        /* Tablet and Desktop Styles (md: equivalent) */
+        @media (min-width: 768px) {
+            .nav-desktop-menu {
+                display: flex;
+            }
+            .mobile-menu-button {
+                display: none;
+            }
+
+            .header-title {
+                font-size: 4rem; /* 64px */
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)); /* Use 2 columns for a deeper dive */
+            }
+        }
+        /* Desktop Styles (lg: equivalent) */
+        @media (min-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr)); /* Use 4 columns on large screens */
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <!-- Logo/Site Title -->
+                <a href="index.html" class="nav-logo">
+                    TiffinConnect
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="nav-desktop-menu">
+                    <a href="index.html#features" class="nav-link active">Features</a>
+                    <a href="index.html#ordering" class="nav-link">Ordering</a>
+                    <a href="index.html#delivery" class="nav-link">For Providers</a>
+                    <button onclick="showMessage('Login/Sign Up initiated. Redirecting to app dashboard.')" class="btn-primary">
+                        Start Ordering
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button (Hamburger) -->
+                <button id="mobile-menu-button" type="button" class="mobile-menu-button" aria-expanded="false">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden">
+            <div class="container">
+                <a href="index.html#features" class="active" onclick="toggleMobileMenu()">Features</a>
+                <a href="index.html#ordering" onclick="toggleMobileMenu()">Ordering</a>
+                <a href="index.html#delivery" onclick="toggleMobileMenu()">For Providers</a>
+                <button onclick="showMessage('Login/Sign Up initiated. Redirecting to app dashboard.'); toggleMobileMenu()" class="btn-primary">
+                    Start Ordering
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Page Header -->
+        <section id="page-header">
+            <div class="container">
+                <h1 class="header-title">
+                    Core <span>Platform Features</span>
+                </h1>
+                <p class="header-subtitle">
+                    Discover how TiffinConnect delivers guaranteed freshness, flexible ordering, and reliability for both customers and verified providers.
+                </p>
+            </div>
+        </section>
+
+        <!-- Expanded Features Section -->
+        <section id="expanded-features">
+            <div class="container">
+                <div class="features-grid">
+                    <!-- Feature Card 1: Verified Providers (Expanded) -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                             <!-- Verified Icon (Checkmark in a box) -->
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3>Verified Partners</h3>
+                        <p>Every tiffin provider undergoes a rigorous **3-step verification process**, including hygiene audits and initial quality checks, ensuring only the best and most reliable kitchens serve our customers.</p>
+                    </div>
+
+                    <!-- Feature Card 2: Daily Menus & Limits (Expanded) -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <!-- Menu/Limit Icon (Clipboard with numbers) -->
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M10 16h.01"></path></svg>
+                        </div>
+                        <h3>Guaranteed Freshness</h3>
+                        <p>Providers set a fixed daily limit (between **50 and 100 tiffins**). Once this limit is reached, ordering closes, guaranteeing that every meal is freshly prepared and preventing the use of stored ingredients.</p>
+                    </div>
+
+                    <!-- Feature Card 3: Flexible Ordering (Expanded) -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <!-- Options Icon -->
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8h12a2 2 0 002-2V8a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2zm10-5a2 2 0 01-2 2H8a2 2 0 01-2-2v-2a2 2 0 012-2h4a2 2 0 012 2v2z"></path></svg>
+                        </div>
+                        <h3>Portion Customization</h3>
+                        <p>Customize your order with **full or half portions** based on your hunger and budget. All orders must be finalized before the **daily cutoff time** to allow providers adequate preparation time.</p>
+                    </div>
+
+                    <!-- Feature Card 4: New Feature - Transparent Ratings -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <!-- Star/Rating Icon -->
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.155L12 5.86l.951-3.705M12 6.5l.634 3.17h3.336l-2.73 1.983.82 3.177L12 13.5l-2.06 1.488.82-3.177-2.73-1.983h3.336L12 6.5zM12 21v-5m-4 5h8"></path></svg>
+                        </div>
+                        <h3>Transparent Ratings</h3>
+                        <p>Decide confidently using community-driven ratings. Only verified customers can leave reviews, giving you the most **accurate and honest picture** of a provider's quality and service history.</p>
+                    </div>
+                </div>
+
+                <div class="text-center" style="margin-top: 4rem;">
+                    <a href="index.html#provider-cta" class="btn-primary" style="padding: 1rem 2.5rem; font-size: 1.125rem;">
+                        Ready to Join or Order?
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container text-center">
+            <p>&copy; 2025 TiffinConnect. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#" onclick="showMessage('Navigating to Provider Terms.')">Provider Terms</a>
+                <a href="#" onclick="showMessage('Navigating to Customer Support.')">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Modal/Message Box (Replaces alert()) -->
+    <div id="custom-message-box" class="fixed inset-0 hidden" style="display: none;">
+        <div class="message-box-content shadow-2xl">
+            <h3>Notification</h3>
+            <p id="message-text"></p>
+            <button onclick="hideMessage()" class="btn-modal-close">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- Custom Message Box Functions (Replaces alert()) ---
+
+        /**
+         * Shows a custom message box with the given text.
+         * @param {string} message - The message to display.
+         */
+        function showMessage(message) {
+            const messageBox = document.getElementById('custom-message-box');
+            document.getElementById('message-text').textContent = message;
+            messageBox.style.display = 'flex'; // Use style property for show/hide
+        }
+
+        /**
+         * Hides the custom message box.
+         */
+        function hideMessage() {
+            document.getElementById('custom-message-box').style.display = 'none'; // Use style property for show/hide
+        }
+
+        // --- Mobile Menu Toggle Logic ---
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        /**
+         * Toggles the visibility of the mobile menu.
+         */
+        function toggleMobileMenu() {
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.style.display = 'block';
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.style.display = 'none';
+            }
+        }
+
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+
+
+        // Initialize mobile menu state correctly on load
+        document.addEventListener('DOMContentLoaded', () => {
+             // Ensure the initial state for the mobile menu is hidden
+             if (!mobileMenu.classList.contains('hidden')) {
+                 mobileMenu.classList.add('hidden');
+                 mobileMenu.style.display = 'none';
+             }
+
+             // Handle initial state of the modal
+             document.getElementById('custom-message-box').style.display = 'none';
+        });
+
+    </script>
+</body>
+</html>

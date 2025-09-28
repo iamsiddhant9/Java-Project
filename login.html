@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiffin Connect - Login</title>
+    <style>
+        /* --- Poppins Font Import --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        /* --- CSS Variables (Purple Theme) --- */
+        :root {
+            --light-bg: #f7faff;
+            --platform-accent: #a24ae2; /* New Purple Accent */
+            --primary-text: #733dd5; /* New Darker Purple */
+            --secondary-text: #6e5f7a; /* New Muted Purple */
+            --max-width: 1280px;
+            --green-success: #2ecc71;
+            --red-alert: #e74c3c;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--primary-text);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column; /* Allows main content to fill space */
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        /* --- Utility Classes --- */
+        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .rounded-xl { border-radius: 0.75rem; }
+        .hidden { display: none !important; }
+
+        /* --- Navbar --- */
+        #navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 4rem;
+        }
+
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            color: var(--platform-accent);
+            text-decoration: none;
+        }
+        
+        /* --- Main Login Content --- */
+        main {
+            flex-grow: 1; /* Makes main content fill available space */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .login-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            border-top: 5px solid var(--platform-accent);
+        }
+
+        .login-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--platform-accent);
+        }
+        .login-card p {
+            color: var(--secondary-text);
+            margin-bottom: 2rem;
+        }
+
+        /* --- Form Styling --- */
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-text);
+            font-size: 0.9rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .input-group input:focus {
+            border-color: var(--platform-accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(162, 74, 226, 0.2);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--platform-accent);
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-top: 1rem;
+        }
+        .btn-login:hover {
+            background-color: #7b2dc0;
+            transform: translateY(-2px);
+        }
+
+        .forgot-password {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+        .forgot-password a {
+            color: var(--secondary-text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .forgot-password a:hover {
+            color: var(--platform-accent);
+        }
+
+        /* --- Footer --- */
+        #footer {
+            background-color: var(--primary-text);
+            color: white;
+            padding: 1.5rem 1rem;
+            margin-top: auto; /* Pushes footer to the bottom */
+        }
+        #footer p {
+            font-size: 0.875rem;
+            color: #d2c8e3;
+            text-align: center;
+            margin: 0;
+        }
+
+
+        /* --- Custom Modal/Message Box --- */
+        #custom-message-box {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            display: none;
+        }
+
+        .message-box-content {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-width: 24rem;
+            width: 90%;
+        }
+
+        .message-box-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-text);
+            margin-bottom: 1rem;
+        }
+
+        .message-box-content p {
+            color: var(--secondary-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-modal-close {
+            width: 100%;
+            background-color: var(--platform-accent);
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-modal-close:hover {
+            background-color: #7b2dc0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <!-- Logo/Site Title -->
+                <a href="index.html" class="nav-logo">
+                    TiffinConnect
+                </a>
+                <!-- Minimal nav links pointing back to key pages -->
+                <div style="display: flex; gap: 1rem;">
+                    <a href="order.html" style="text-decoration: none; color: var(--secondary-text); padding: 0.5rem;">Order</a>
+                    <a href="institution.html" style="text-decoration: none; color: var(--secondary-text); padding: 0.5rem;">Join as Provider</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Login Card -->
+        <div class="login-card">
+            <h2>Welcome Back</h2>
+            <p>Sign in to manage your tiffin orders and provider dashboard.</p>
+
+            <form id="login-form">
+                
+                <div class="input-group">
+                    <label for="institution_id">Institution ID or Email</label>
+                    <input type="text" id="institution_id" name="institution_id" required placeholder="Enter ID or email">
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="••••••••">
+                </div>
+
+                <button type="submit" class="btn-login">
+                    Login Securely
+                </button>
+            </form>
+
+            <div class="forgot-password">
+                <a href="#" onclick="showMessage('Password reset functionality is simulated. Please check your email for instructions.')">Forgot Password?</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container">
+            <p>&copy; 2025 TiffinConnect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Custom Modal/Message Box (Replaces alert()) -->
+    <div id="custom-message-box">
+        <div class="message-box-content shadow-xl">
+            <h3>Login Status</h3>
+            <p id="message-text"></p>
+            <button onclick="hideMessage()" class="btn-modal-close">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- Custom Message Box Functions (Replaces alert()) ---
+
+        /**
+         * Shows a custom message box with the given text.
+         * @param {string} message - The message to display.
+         */
+        function showMessage(message, isError = false) {
+            const messageBox = document.getElementById('custom-message-box');
+            const messageHeader = messageBox.querySelector('h3');
+            document.getElementById('message-text').innerHTML = message;
+            
+            if (isError) {
+                messageHeader.textContent = 'Login Error';
+                messageHeader.style.color = 'var(--red-alert)';
+            } else {
+                messageHeader.textContent = 'Login Status';
+                messageHeader.style.color = 'var(--primary-text)';
+            }
+            messageBox.style.display = 'flex';
+        }
+
+        /**
+         * Hides the custom message box.
+         */
+        function hideMessage() {
+            document.getElementById('custom-message-box').style.display = 'none';
+        }
+
+        /**
+         * Simulates the login process.
+         * @param {Event} event - The form submission event.
+         */
+        function handleLogin(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const idInput = document.getElementById('institution_id');
+            const passwordInput = document.getElementById('password');
+            const id = idInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!id || !password) {
+                showMessage('Please enter both your Institution ID/Email and Password.', true);
+                return;
+            }
+
+            // Simulate successful login for specific test credentials
+            if (id === 'demo@uni.edu' && password === 'securepass') {
+                showMessage(`
+                    <p style="color: var(--green-success); font-weight: 600;">Login Successful!</p>
+                    <p>Welcome, Demo User. Redirecting to your dashboard...</p>
+                `);
+                // In a real app, you would redirect the user here:
+                // setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+            } 
+            // Simulate provider login
+            else if (id === 'provider@kit.com' && password === 'provider') {
+                 showMessage(`
+                    <p style="color: var(--green-success); font-weight: 600;">Provider Login Successful!</p>
+                    <p>Welcome, Tiffin Provider. Redirecting to your menu management console...</p>
+                `);
+            }
+            // Simulated failure
+            else {
+                showMessage('Invalid credentials. Please check your Institution ID/Email and Password.', true);
+            }
+        }
+
+        // --- Initialization on Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+             // Ensure the initial state for the modal is hidden
+             document.getElementById('custom-message-box').style.display = 'none';
+             
+             // Attach the submit handler to the form
+             document.getElementById('login-form').addEventListener('submit', handleLogin);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiffin Connect - Start Ordering</title>
+    <style>
+        /* --- Poppins Font Import --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        /* --- CSS Variables (Updated to Purple Theme) --- */
+        :root {
+            --light-bg: #f7faff;
+            --platform-accent: #a24ae2; /* New Purple Accent */
+            --primary-text: #733dd5; /* New Darker Purple */
+            --secondary-text: #6e5f7a; /* New Muted Purple */
+            --red-alert: #e74c3c;
+            --green-success: #2ecc71;
+            --max-width: 1280px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif; /* Changed to Poppins */
+            background-color: var(--light-bg);
+            color: var(--primary-text);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        /* --- Utility Classes --- */
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .rounded-xl { border-radius: 0.75rem; }
+        .hidden { display: none !important; }
+
+        /* --- Navbar --- */
+        #navbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 4rem;
+        }
+
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            color: var(--platform-accent);
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+        
+        /* --- Page Header --- */
+        #page-header {
+            padding: 4rem 1rem 3rem;
+            background-color: white;
+            text-align: center;
+        }
+        .header-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            color: var(--primary-text); /* Use primary text color for H1 */
+        }
+        .header-title span {
+            color: var(--platform-accent);
+        }
+        .header-subtitle {
+            font-size: 1.25rem;
+            color: var(--secondary-text);
+            max-width: 48rem;
+            margin: 0 auto;
+        }
+
+        /* --- Cutoff Banner --- */
+        #cutoff-banner {
+            background-color: var(--platform-accent); /* Using accent color for banner */
+            color: white;
+            padding: 1rem 1rem;
+            font-weight: 600;
+            text-align: center;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #cutoff-time-display {
+            font-weight: 800;
+        }
+
+        /* --- Meal Listings --- */
+        #meal-listings {
+            padding: 3rem 1rem;
+        }
+        .listings-grid {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: 1fr;
+        }
+
+        .tiffin-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--platform-accent); /* Purple accent stripe */
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .provider-header h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--primary-text);
+        }
+
+        .provider-header .tag {
+            display: inline-block;
+            background-color: var(--green-success);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .menu-details {
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--secondary-text);
+        }
+
+        .stock-info {
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.5rem 0;
+            border-top: 1px dashed #ddd;
+            border-bottom: 1px dashed #ddd;
+            color: var(--platform-accent);
+        }
+        .stock-info.low {
+            color: var(--red-alert);
+        }
+
+        .ordering-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .portion-selection {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f0f4f7; /* Slightly darker light-bg for contrast */
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            gap: 0.5rem;
+        }
+
+        .portion-input {
+            display: none;
+        }
+
+        .portion-label {
+            flex-grow: 1;
+            text-align: center;
+            padding: 0.6rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--secondary-text);
+            transition: all 0.2s;
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+        .portion-input:checked + .portion-label {
+            background-color: var(--platform-accent);
+            color: white;
+            border-color: var(--platform-accent);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-order {
+            padding: 0.75rem 1rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            background-color: var(--green-success); /* Keeping green for CTA */
+            color: white;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .btn-order:hover:not(:disabled) {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+        }
+        .btn-order:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        /* --- Footer --- */
+        #footer {
+            background-color: var(--primary-text);
+            color: white;
+            padding: 2.5rem 1rem;
+        }
+        #footer p {
+            font-size: 0.875rem;
+            color: #d2c8e3; /* Adjusted footer text color for purple bg */
+            text-align: center;
+        }
+
+
+        /* --- Custom Modal/Message Box --- */
+        #custom-message-box {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            display: none;
+        }
+
+        .message-box-content {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-width: 24rem;
+            width: 90%;
+            transform: scale(1);
+        }
+
+        .message-box-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-text);
+            margin-bottom: 1rem;
+        }
+
+        .message-box-content p {
+            color: var(--secondary-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-modal-close {
+            width: 100%;
+            background-color: var(--platform-accent); /* Purple button */
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-modal-close:hover {
+            background-color: #7b2dc0; /* Darker purple on hover */
+        }
+
+        /* --- Media Queries --- */
+        @media (min-width: 768px) {
+            .listings-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .header-title {
+                font-size: 4rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .listings-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <!-- Logo/Site Title -->
+                <a href="index.html" class="nav-logo">
+                    CampusCravings
+                </a>
+                <!-- Minimal nav links pointing back to key pages -->
+                <div style="display: flex; gap: 1rem;">
+                    <a href="index.html" style="text-decoration: none; color: var(--secondary-text); padding: 0.5rem;">Join as Provider</a>
+                    <a href="institution.html" style="text-decoration: none; color: var(--secondary-text); padding: 0.5rem;">Institution Plans</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Page Header -->
+        <section id="page-header">
+            <div class="container">
+                <h1 class="header-title">
+                    Order Your <span>Daily Tiffin</span>
+                </h1>
+                <p class="header-subtitle">
+                    Fresh meals listed daily. Don't miss the cutoff to secure your choice!
+                </p>
+            </div>
+        </section>
+
+        <!-- Cutoff Banner -->
+        <div id="cutoff-banner">
+            Daily ordering cutoff is in: <span id="cutoff-time-display">02:35:48</span>. Order now to secure your meal!
+        </div>
+
+        <!-- Meal Listings -->
+        <section id="meal-listings">
+            <div class="container">
+                <div class="listings-grid">
+                    
+                    <!-- Provider Card 1: Riya's Kitchen -->
+                    <div class="tiffin-card">
+                        <div class="provider-header">
+                            <h3>Riya's Kitchen</h3>
+                            <span class="tag">Verified Partner</span>
+                        </div>
+
+                        <div class="menu-details">
+                            <p style="font-style: italic; color: var(--platform-accent); margin-bottom: 0.75rem;">Today's Special: Authentic North Indian Thali</p>
+                            <div class="menu-item"><span>Daal Makhani</span><span>$1.50</span></div>
+                            <div class="menu-item"><span>Butter Roti (4 Pcs)</span><span>$1.00</span></div>
+                            <div class="menu-item"><span>Seasonal Vegetable Curry</span><span>$2.00</span></div>
+                            <div class="menu-item" style="font-weight: 700; margin-top: 1rem; color: var(--primary-text);"><span>Total Full Portion Price:</span><span>$4.50</span></div>
+                        </div>
+
+                        <div id="stock-riya" class="stock-info">
+                            Tiffins Remaining: 78 / 100
+                        </div>
+
+                        <div class="ordering-controls">
+                            <form id="form-riya">
+                                <div class="portion-selection">
+                                    <input type="radio" id="riya-full" name="portion" value="full" checked class="portion-input">
+                                    <label for="riya-full" class="portion-label">Full Portion</label>
+
+                                    <input type="radio" id="riya-half" name="portion" value="half" class="portion-input">
+                                    <label for="riya-half" class="portion-label">Half Portion</label>
+                                </div>
+                                <button type="button" onclick="handleOrder('riya', 'Riya\'s Kitchen')" id="order-btn-riya" class="btn-order" style="margin-top: 1rem;">
+                                    Place Order
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Provider Card 2: Chef's Delight (Lower Stock) -->
+                    <div class="tiffin-card">
+                        <div class="provider-header">
+                            <h3>Chef's Delight</h3>
+                            <span class="tag" style="background-color: var(--platform-accent);">Popular Choice</span>
+                        </div>
+
+                        <div class="menu-details">
+                            <p style="font-style: italic; color: var(--platform-accent); margin-bottom: 0.75rem;">Today's Special: Bengali Fish Curry (No Veg Option)</p>
+                            <div class="menu-item"><span>Katla Fish Curry</span><span>$3.50</span></div>
+                            <div class="menu-item"><span>Steamed Rice</span><span>$1.00</span></div>
+                            <div class="menu-item"><span>Small Salad</span><span>$0.50</span></div>
+                            <div class="menu-item" style="font-weight: 700; margin-top: 1rem; color: var(--primary-text);"><span>Total Full Portion Price:</span><span>$5.00</span></div>
+                        </div>
+
+                        <div id="stock-chef" class="stock-info low">
+                            Tiffins Remaining: 12 / 50
+                        </div>
+
+                        <div class="ordering-controls">
+                            <form id="form-chef">
+                                <div class="portion-selection">
+                                    <input type="radio" id="chef-full" name="portion" value="full" checked class="portion-input">
+                                    <label for="chef-full" class="portion-label">Full Portion</label>
+
+                                    <input type="radio" id="chef-half" name="portion" value="half" class="portion-input">
+                                    <label for="chef-half" class="portion-label">Half Portion</label>
+                                </div>
+                                <button type="button" onclick="handleOrder('chef', 'Chef\'s Delight')" id="order-btn-chef" class="btn-order" style="margin-top: 1rem;">
+                                    Place Order
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Provider Card 3: Global Grub (Sold Out) -->
+                    <div class="tiffin-card" style="opacity: 0.6;">
+                        <div class="provider-header">
+                            <h3>Global Grub</h3>
+                            <span class="tag" style="background-color: var(--secondary-text);">New Provider</span>
+                        </div>
+
+                        <div class="menu-details">
+                            <p style="font-style: italic; color: var(--platform-accent); margin-bottom: 0.75rem;">Today's Special: Mediterranean Lentil Bowl</p>
+                            <div class="menu-item"><span>Lemon-Garlic Lentils</span><span>$2.50</span></div>
+                            <div class="menu-item"><span>Pita Bread (2 Pcs)</span><span>$1.00</span></div>
+                            <div class="menu-item"><span>Tzatziki Dip</span><span>$1.00</span></div>
+                            <div class="menu-item" style="font-weight: 700; margin-top: 1rem; color: var(--primary-text);"><span>Total Full Portion Price:</span><span>$4.50</span></div>
+                        </div>
+
+                        <div id="stock-global" class="stock-info low" style="color: var(--red-alert);">
+                            Tiffins Remaining: 0 / 75 - SOLD OUT
+                        </div>
+
+                        <div class="ordering-controls">
+                            <form id="form-global">
+                                <div class="portion-selection">
+                                    <input type="radio" id="global-full" name="portion" value="full" checked class="portion-input" disabled>
+                                    <label for="global-full" class="portion-label" style="opacity: 0.7;">Full Portion</label>
+
+                                    <input type="radio" id="global-half" name="portion" value="half" class="portion-input" disabled>
+                                    <label for="global-half" class="portion-label" style="opacity: 0.7;">Half Portion</label>
+                                </div>
+                                <button type="button" onclick="handleOrder('global', 'Global Grub')" id="order-btn-global" class="btn-order" style="margin-top: 1rem;" disabled>
+                                    Sold Out
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container">
+            <p>&copy; 2025 TiffinConnect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Custom Modal/Message Box (Replaces alert()) -->
+    <div id="custom-message-box">
+        <div class="message-box-content shadow-2xl">
+            <h3>Order Status</h3>
+            <p id="message-text"></p>
+            <button onclick="hideMessage()" class="btn-modal-close">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- Simulated Real-time Stock Data ---
+        const stockData = {
+            riya: { current: 78, max: 100 },
+            chef: { current: 12, max: 50 },
+            global: { current: 0, max: 75 }
+        };
+
+        // --- Custom Message Box Functions (Replaces alert()) ---
+        function showMessage(message) {
+            const messageBox = document.getElementById('custom-message-box');
+            document.getElementById('message-text').innerHTML = message;
+            messageBox.style.display = 'flex';
+        }
+
+        function hideMessage() {
+            document.getElementById('custom-message-box').style.display = 'none';
+        }
+
+        // --- Stock Update and UI Rendering ---
+        
+        /**
+         * Updates the UI for a specific provider based on current stock.
+         * @param {string} providerId - ID of the provider ('riya', 'chef', 'global').
+         */
+        function updateUI(providerId) {
+            const data = stockData[providerId];
+            const stockElement = document.getElementById(`stock-${providerId}`);
+            const orderButton = document.getElementById(`order-btn-${providerId}`);
+
+            stockElement.textContent = `Tiffins Remaining: ${data.current} / ${data.max}`;
+            
+            // Highlight low stock
+            if (data.current <= 15 && data.current > 0) {
+                stockElement.classList.add('low');
+            } else {
+                stockElement.classList.remove('low');
+            }
+
+            // Handle sold out state
+            if (data.current <= 0) {
+                stockElement.textContent = `Tiffins Remaining: 0 / ${data.max} - SOLD OUT`;
+                orderButton.disabled = true;
+                orderButton.textContent = 'Sold Out';
+                document.querySelector(`#form-${providerId}`).closest('.tiffin-card').style.opacity = '0.6';
+                
+                // Disable portion inputs
+                document.querySelectorAll(`#form-${providerId} .portion-input`).forEach(input => {
+                    input.disabled = true;
+                });
+
+            } else {
+                orderButton.disabled = false;
+                orderButton.textContent = 'Place Order';
+                document.querySelector(`#form-${providerId}`).closest('.tiffin-card').style.opacity = '1';
+                
+                // Enable portion inputs
+                document.querySelectorAll(`#form-${providerId} .portion-input`).forEach(input => {
+                    input.disabled = false;
+                });
+            }
+        }
+
+        /**
+         * Handles the order click, simulates processing, and updates stock.
+         * @param {string} providerId - ID of the provider.
+         * @param {string} providerName - The display name of the provider.
+         */
+        function handleOrder(providerId, providerName) {
+            const data = stockData[providerId];
+            const form = document.getElementById(`form-${providerId}`);
+            const selectedPortionInput = form.querySelector('input[name="portion"]:checked');
+            
+            if (!selectedPortionInput) {
+                showMessage('Please select a portion size (Full or Half) before ordering.');
+                return;
+            }
+            
+            const selectedPortion = selectedPortionInput.value;
+
+
+            if (data.current <= 0) {
+                showMessage(`Sorry, **${providerName}**'s tiffins have just sold out! Please select another meal.`);
+                updateUI(providerId);
+                return;
+            }
+
+            // Simulate order processing and decrement stock
+            data.current -= 1; 
+
+            // Update UI immediately
+            updateUI(providerId);
+
+            // Show confirmation
+            const message = `
+                <p>Order Placed! You successfully secured a **${selectedPortion} portion** tiffin from **${providerName}**.</p>
+                <p style="font-style: italic; color: var(--green-success);">Tiffin confirmed! We will notify you when it is out for delivery.</p>
+            `;
+            showMessage(message);
+        }
+
+        // --- Simulated Cutoff Timer ---
+        function startCutoffTimer() {
+            // Set cutoff time (e.g., 9:00 AM today or tomorrow)
+            const now = new Date();
+            let cutoff = new Date(now);
+            
+            cutoff.setHours(9, 0, 0, 0); // 9:00 AM
+
+            if (now.getTime() > cutoff.getTime()) {
+                cutoff.setDate(cutoff.getDate() + 1); // Set for tomorrow
+            }
+
+            const timerElement = document.getElementById('cutoff-time-display');
+            const bannerElement = document.getElementById('cutoff-banner');
+
+            const interval = setInterval(() => {
+                const now = new Date();
+                const diff = cutoff.getTime() - now.getTime();
+
+                if (diff < 0) {
+                    clearInterval(interval);
+                    bannerElement.style.backgroundColor = 'var(--red-alert)';
+                    bannerElement.textContent = 'Ordering is closed for today. Check back tomorrow at 9:00 AM!';
+                    
+                    // Disable all order buttons after cutoff
+                    document.querySelectorAll('.btn-order').forEach(btn => {
+                        btn.disabled = true;
+                        btn.textContent = 'Cutoff Passed';
+                    });
+                    return;
+                }
+
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                const timeString = 
+                    String(hours).padStart(2, '0') + ':' + 
+                    String(minutes).padStart(2, '0') + ':' + 
+                    String(seconds).padStart(2, '0');
+                
+                timerElement.textContent = timeString;
+
+            }, 1000);
+        }
+
+
+        // --- Initialization on Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+             // Initialize Modal state
+             document.getElementById('custom-message-box').style.display = 'none';
+
+             // Initialize the UI for all providers
+             Object.keys(stockData).forEach(updateUI);
+
+             // Start the cutoff timer simulation
+             startCutoffTimer();
+        });
+    </script>
+</body>
+</html>
