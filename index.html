@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Cravings</title>
+    <title>Tiffin Connect - Verified Meals</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
         :root {
-            --light-bg: #f7faff;
+            --light-bg: #dee0e7;
             --platform-accent: #a24ae2;
             --primary-text: #733dd5;
             --secondary-text: #6e5f7a;
@@ -20,9 +20,9 @@
         }
 
         body {
-           font-family: "Poppins", sans-serif;
-           font-weight: 400;
-           font-style: normal;
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+            font-style: normal;
             background-color: var(--light-bg);
             color: var(--primary-text);
             margin: 0;
@@ -157,12 +157,37 @@
         /* --- Hero Section --- */
         #home {
             min-height: 85vh;
-            background-color: rgb(235, 223, 243);
+            position: relative; /* Needed for absolute positioning of ::before */
+            overflow: hidden; /* Important for containing the absolute pseudo-element */
+            
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 5rem 1rem;
             border-bottom: 4px solid rgba(41, 35, 38, 0.2);
+        }
+        
+        /* CSS to apply the background image with reduced opacity */
+        #home::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("bg.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.3; /* Adjusted opacity here */
+            z-index: 1; /* Place the background layer underneath the content */
+        }
+        
+        /* CSS to ensure the content is above the background */
+        .hero-content-wrapper {
+            position: relative;
+            z-index: 2; /* Place the content layer above the background */
+            width: 100%;
         }
 
         .hero-title {
@@ -170,6 +195,9 @@
             font-weight: 600;
             margin-bottom: 1.5rem;
             line-height: 1.2;
+            color: var(--primary-text);
+            /* ADDED: Shadow for contrast against light/busy background */
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); 
         }
         .hero-title span {
             color: var(--platform-accent);
@@ -177,11 +205,14 @@
 
         .hero-subtitle {
             font-size: 1.25rem;
-            color: var(--secondary-text);
+            /* CHANGED: Set a darker, more visible text color */
+            color: #333; 
             margin-bottom: 2.5rem;
             max-width: 56rem; /* Adjust later */
             margin-left: auto;
             margin-right: auto;
+            /* ADDED: Shadow for contrast against light/busy background */
+            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
         }
 
         .hero-cta-group a, .hero-cta-group button {
@@ -257,6 +288,9 @@
             color: var(--platform-accent);
             margin-bottom: 1rem;
         }
+        .feature-card:hover .feature-icon-wrapper {
+            color: white; /* Change icon color on hover */
+        }
         .feature-icon-wrapper svg {
             width: 2.5rem;
             height: 2.5rem;
@@ -269,6 +303,9 @@
         }
         .feature-card p {
             color: var(--secondary-text);
+        }
+        .feature-card:hover p {
+            color: #f7faff; /* Change paragraph color on hover */
         }
 
         /* --- Ordering & Delivery Section --- */
@@ -327,8 +364,8 @@
         .list-title {
             font-weight: 600;
             font-size: 18px;
-           margin-top: 0;
-           padding-top: 0;
+            margin-top: 0;
+            padding-top: 0;
 
         }
 
@@ -428,7 +465,7 @@
             transition: background-color 0.3s, transform 0.3s;
         }
         .btn-form-submit:hover {
-            background-color: #1e40af;
+            background-color: #6d17de;
             transform: scale(1.01);
         }
 
@@ -505,7 +542,7 @@
             transition: background-color 0.3s;
         }
         .btn-modal-close:hover {
-            background-color: #1e40af;
+            background-color: #6d17de;
         }
 
         /* --- Media Queries for Responsiveness --- */
@@ -550,32 +587,35 @@
                 font-size: 28px;
                 font-weight: 400;
                 margin: 5px;
+                /* ADDED: Shadow for contrast */
+                text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+                color: #333; /* Ensuring typewriter text is dark */
             }
         }
         .cursor {
-    display: inline-block;
-    font-size: 28px;
-    animation: blink 1s infinite;
-}
+            display: inline-block;
+            font-size: 28px;
+            animation: blink 1s infinite;
+            /* ADDED: Shadow for contrast */
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); 
+            color: #333; /* Ensuring cursor is dark */
+        }
 
-@keyframes blink {
-    0%, 50%, 100% { opacity: 1; }
-    25%, 75% { opacity: 0; }
-}
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0; }
+        }
     </style>
 </head>
 <body class="bg-light-bg text-primary-text font-sans antialiased">
 
-    <!-- Navbar -->
     <nav id="navbar">
         <div class="container">
             <div class="nav-content">
-                <!-- Logo/Site Title -->
                 <a href="#home" class="nav-logo">
                     Campus Cravings
                 </a>
 
-                <!-- Desktop Menu -->
                 <div class="nav-desktop-menu">
                     <a href="#features" class="nav-link">Features</a>
                     <a href="order.html" class="nav-link">Start Ordering</a>
@@ -585,7 +625,6 @@
                     </button>
                 </div>
 
-                <!-- Mobile Menu Button (Hamburger) -->
                 <button id="mobile-menu-button" type="button" class="mobile-menu-button" aria-expanded="false">
                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -594,7 +633,6 @@
             </div>
         </div>
 
-        <!-- Mobile Menu (Hidden by default) -->
         <div id="mobile-menu" class="hidden">
             <div class="container">
                 <a href="#features" onclick="toggleMobileMenu()">Features</a>
@@ -608,61 +646,56 @@
     </nav>
 
     <main>
-        <!-- Hero Section: Platform Overview -->
         <section id="home" class="text-center">
+            
             <div class="container">
-                <div class="max-w-5xl mx-auto">
-                    <h1 class="hero-title">
-                        Your <span>One-Stop Platform</span> for Verified Tiffin Meals
-                    </h1>
-                    <p class="hero-subtitle">
-                        Connecting busy individuals and institutions with the best local tiffin providers, managed with daily freshness and reliability.
-                    </p>
-                     <span id="typewriter"></span>
-                     <span class="cursor">|</span>
-                    <div class="hero-cta-group">
-                        <a href="order.html" class="btn-cta-primary">
-                            Find a Meal Today
-                        </a>
-                        <a href="#provider-cta" class="btn-cta-secondary">
-                            Join as a Provider
-                        </a>
+                <div class="hero-content-wrapper"> 
+                    <div class="max-w-5xl mx-auto">
+                        <h1 class="hero-title">
+                            Your <span>One-Stop Platform</span> for Verified Tiffin Meals
+                        </h1>
+                        <p class="hero-subtitle">
+                            Connecting busy individuals and institutions with the best local tiffin providers, managed with daily freshness and reliability.
+                        </p>
+                        <span id="typewriter"></span>
+                        <span class="cursor">|</span>
+                        <div class="hero-cta-group">
+                            <a href="order.html" class="btn-cta-primary">
+                                Find a Meal Today
+                            </a>
+                            <a href="#provider-cta" class="btn-cta-secondary">
+                                Join as a Provider
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Features Section: Tiffin Management Details -->
         <section id="features">
             <div class="container">
                 <h2 class="section-title">
                     Reliability & Freshness <span>Built-in</span>
                 </h2>
                 <div class="features-grid">
-                    <!-- Feature Card 1: Verified Providers -->
                     <div class="feature-card">
                         <div class="feature-icon-wrapper">
-                             <!-- Verified Icon (Checkmark in a box) -->
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
                         <h3>Verified Partners</h3>
                         <p class="text-secondary-text">We verify every tiffin provider for quality, hygiene, and timely delivery, ensuring peace of mind for every customer.</p>
                     </div>
 
-                    <!-- Feature Card 2: Daily Menus & Limits -->
                     <div class="feature-card">
                         <div class="feature-icon-wrapper">
-                            <!-- Menu/Limit Icon (Clipboard with numbers) -->
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M10 16h.01"></path></svg>
                         </div>
                         <h3>Daily Updates & Limits</h3>
                         <p class="text-secondary-text">Providers post daily menu updates and set quantity limits (50-100) to guarantee freshness and prevent overselling.</p>
                     </div>
 
-                    <!-- Feature Card 3: Cutoff Times & Portions -->
                     <div class="feature-card">
                         <div class="feature-icon-wrapper">
-                            <!-- Clock/Customization Icon (Clock with options) -->
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
                         <h3>Flexible Ordering</h3>
@@ -672,11 +705,9 @@
             </div>
         </section>
 
-        <!-- Ordering & Delivery Section -->
         <section id="ordering">
             <div class="container">
                 <div class="content-grid">
-                    <!-- Ordering Process Card -->
                     <div class="ordering-card shadow-2xl">
                         <h2>
                             Seamless Customer Ordering
@@ -706,7 +737,6 @@
                         </ul>
                     </div>
 
-                    <!-- Special Delivery Option -->
                     <div id="delivery" class="delivery-card shadow-2xl">
                         <h2 style="color: white;">
                             Self-Delivery for Educational Institutes
@@ -730,7 +760,6 @@
         </section>
 
 
-        <!-- Call to Action / Provider Sign Up Section -->
         <section id="provider-cta">
             <div class="form-container shadow-xl">
                 <h2 class="text-center">
@@ -759,7 +788,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer id="footer">
         <div class="container text-center">
             <p>&copy; 2025 CampusCravings. All rights reserved.</p>
@@ -770,7 +798,6 @@
         </div>
     </footer>
 
-    <!-- Custom Modal/Message Box (Replaces alert()) -->
     <div id="custom-message-box" class="fixed inset-0 hidden" style="display: none;">
         <div class="message-box-content shadow-2xl">
             <h3>Notification</h3>
@@ -795,39 +822,39 @@
         }
 
 
-
+        // --- Typewriter Effect Logic ---
         const words = ["Made by", "Siddhant Sonarkar", "Rizwan Khan", "Vinit Wani", "Ashish Dhule"];
-let i = 0; // word index
-let j = 0; // character index
-let currentWord = '';
-let isDeleting = false;
-const speed = 150; // typing speed
-const typewriter = document.getElementById('typewriter');
+        let i = 0; // word index
+        let j = 0; // character index
+        let currentWord = '';
+        let isDeleting = false;
+        const speed = 150; // typing speed
+        const typewriter = document.getElementById('typewriter');
 
-function type() {
-    const fullWord = words[i];
+        function type() {
+            const fullWord = words[i];
 
-    if (isDeleting) {
-        currentWord = fullWord.substring(0, j--);
-    } else {
-        currentWord = fullWord.substring(0, j++);
-    }
+            if (isDeleting) {
+                currentWord = fullWord.substring(0, j--);
+            } else {
+                currentWord = fullWord.substring(0, j++);
+            }
 
-    typewriter.textContent = currentWord;
+            typewriter.textContent = currentWord;
 
-    if (!isDeleting && j === fullWord.length + 1) {
-        isDeleting = true;
-        setTimeout(type, 1000); // wait before deleting
-    } else if (isDeleting && j === 0) {
-        isDeleting = false;
-        i = (i + 1) % words.length; // move to next word
-        setTimeout(type, 500);
-    } else {
-        setTimeout(type, isDeleting ? speed / 2 : speed);
-    }
-}
+            if (!isDeleting && j === fullWord.length + 1) {
+                isDeleting = true;
+                setTimeout(type, 1000); // wait before deleting
+            } else if (isDeleting && j === 0) {
+                isDeleting = false;
+                i = (i + 1) % words.length; // move to next word
+                setTimeout(type, 500);
+            } else {
+                setTimeout(type, isDeleting ? speed / 2 : speed);
+            }
+        }
 
-type();
+        type(); // Start the typewriter effect
 
         /**
          * Hides the custom message box.
@@ -901,4 +928,3 @@ type();
     </script>
 </body>
 </html>
-
