@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusCravings - Start Ordering</title>
+    <title>CampusCravings - Order Now</title>
     <style>
         /* --- Poppins Font Import --- */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
@@ -24,7 +24,7 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif; /* Changed to Poppins */
+            font-family: 'Poppins', sans-serif;
             background-color: var(--light-bg);
             color: var(--primary-text);
             margin: 0;
@@ -43,7 +43,6 @@
 
         /* --- Utility Classes --- */
         .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
         .rounded-xl { border-radius: 0.75rem; }
         .hidden { display: none !important; }
@@ -73,7 +72,7 @@
             transition: color 0.3s;
             text-decoration: none;
         }
-        
+
         /* --- Page Header --- */
         #page-header {
             padding: 4rem 1rem 3rem;
@@ -85,7 +84,7 @@
             font-weight: 800;
             margin-bottom: 0.5rem;
             line-height: 1.2;
-            color: var(--primary-text); /* Use primary text color for H1 */
+            color: var(--primary-text);
         }
         .header-title span {
             color: var(--platform-accent);
@@ -99,7 +98,7 @@
 
         /* --- Cutoff Banner --- */
         #cutoff-banner {
-            background-color: var(--platform-accent); /* Using accent color for banner */
+            background-color: var(--platform-accent);
             color: white;
             padding: 1rem 1rem;
             font-weight: 600;
@@ -126,7 +125,7 @@
             padding: 1.5rem;
             border-radius: 1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid var(--platform-accent); /* Purple accent stripe */
+            border-left: 5px solid var(--platform-accent);
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
@@ -179,11 +178,11 @@
             flex-direction: column;
             gap: 1rem;
         }
-        
+
         .portion-selection {
             display: flex;
             justify-content: space-between;
-            background-color: #f0f4f7; /* Slightly darker light-bg for contrast */
+            background-color: #f0f4f7;
             border-radius: 0.5rem;
             padding: 0.5rem;
             gap: 0.5rem;
@@ -219,7 +218,7 @@
             border-radius: 0.5rem;
             border: none;
             cursor: pointer;
-            background-color: var(--green-success); /* Keeping green for CTA */
+            background-color: var(--green-success);
             color: white;
             transition: background-color 0.3s, transform 0.3s;
         }
@@ -241,10 +240,9 @@
         }
         #footer p {
             font-size: 0.875rem;
-            color: #d2c8e3; /* Adjusted footer text color for purple bg */
+            color: #d2c8e3;
             text-align: center;
         }
-
 
         /* --- Custom Modal/Message Box --- */
         #custom-message-box {
@@ -281,7 +279,7 @@
 
         .btn-modal-close {
             width: 100%;
-            background-color: var(--platform-accent); /* Purple button */
+            background-color: var(--platform-accent);
             color: white;
             font-weight: 600;
             padding: 0.5rem 1rem;
@@ -291,7 +289,7 @@
             transition: background-color 0.3s;
         }
         .btn-modal-close:hover {
-            background-color: #7b2dc0; /* Darker purple on hover */
+            background-color: #7b2dc0;
         }
 
         /* --- Media Queries --- */
@@ -313,15 +311,12 @@
 </head>
 <body>
 
-    <!-- Navbar -->
     <nav id="navbar">
         <div class="container">
             <div class="nav-content">
-                <!-- Logo/Site Title -->
                 <a href="index.html" class="nav-logo">
                     CampusCravings
                 </a>
-                <!-- Minimal nav links pointing back to key pages -->
                 <div style="display: flex; gap: 1rem;">
                     <a href="index.html" style="text-decoration: none; color: var(--secondary-text); padding: 0.5rem;">Join as Provider</a>
                     <a href="institution.html" style="text-decoration: none; color: var(--secondary-text); padding: 0.5rem;">Institution Plans</a>
@@ -331,7 +326,6 @@
     </nav>
 
     <main>
-        <!-- Page Header -->
         <section id="page-header">
             <div class="container">
                 <h1 class="header-title">
@@ -343,134 +337,27 @@
             </div>
         </section>
 
-        <!-- Cutoff Banner -->
         <div id="cutoff-banner">
             Daily ordering cutoff is in: <span id="cutoff-time-display">02:35:48</span>. Order now to secure your meal!
         </div>
 
-        <!-- Meal Listings -->
         <section id="meal-listings">
             <div class="container">
-                <div class="listings-grid">
-                    
-                    <!-- Provider Card 1: Riya's Kitchen -->
-                    <div class="tiffin-card">
-                        <div class="provider-header">
-                            <h3>Riya's Kitchen</h3>
-                            <span class="tag">Verified Partner</span>
-                        </div>
-
-                        <div class="menu-details">
-                            <p style="font-style: italic; color: var(--platform-accent); margin-bottom: 0.75rem;">Today's Special: Authentic North Indian Thali</p>
-                            <div class="menu-item"><span>Daal Makhani</span><span>$1.50</span></div>
-                            <div class="menu-item"><span>Butter Roti (4 Pcs)</span><span>$1.00</span></div>
-                            <div class="menu-item"><span>Seasonal Vegetable Curry</span><span>$2.00</span></div>
-                            <div class="menu-item" style="font-weight: 700; margin-top: 1rem; color: var(--primary-text);"><span>Total Full Portion Price:</span><span>$4.50</span></div>
-                        </div>
-
-                        <div id="stock-riya" class="stock-info">
-                            Tiffins Remaining: 78 / 100
-                        </div>
-
-                        <div class="ordering-controls">
-                            <form id="form-riya">
-                                <div class="portion-selection">
-                                    <input type="radio" id="riya-full" name="portion" value="full" checked class="portion-input">
-                                    <label for="riya-full" class="portion-label">Full Portion</label>
-
-                                    <input type="radio" id="riya-half" name="portion" value="half" class="portion-input">
-                                    <label for="riya-half" class="portion-label">Half Portion</label>
-                                </div>
-                                <button type="button" onclick="window.location.href='payment.html'" id="order-btn-riya" class="btn-order" style="margin-top: 1rem;">
-                                    Place Order
-                                </button>
-                            </form>
-                        </div>
+                <div id="listings-grid-container" class="listings-grid">
+                    <p id="loading-message" style="grid-column: 1 / -1; text-align: center; color: var(--secondary-text);">
+                        Fetching today's restaurant specials...
+                    </p>
                     </div>
-
-                    <!-- Provider Card 2: Chef's Delight (Lower Stock) -->
-                    <div class="tiffin-card">
-                        <div class="provider-header">
-                            <h3>Chef's Delight</h3>
-                            <span class="tag" style="background-color: var(--platform-accent);">Popular Choice</span>
-                        </div>
-
-                        <div class="menu-details">
-                            <p style="font-style: italic; color: var(--platform-accent); margin-bottom: 0.75rem;">Today's Special: Bengali Fish Curry (No Veg Option)</p>
-                            <div class="menu-item"><span>Katla Fish Curry</span><span>$3.50</span></div>
-                            <div class="menu-item"><span>Steamed Rice</span><span>$1.00</span></div>
-                            <div class="menu-item"><span>Small Salad</span><span>$0.50</span></div>
-                            <div class="menu-item" style="font-weight: 700; margin-top: 1rem; color: var(--primary-text);"><span>Total Full Portion Price:</span><span>$5.00</span></div>
-                        </div>
-
-                        <div id="stock-chef" class="stock-info low">
-                            Tiffins Remaining: 12 / 50
-                        </div>
-
-                        <div class="ordering-controls">
-                            <form id="form-chef">
-                                <div class="portion-selection">
-                                    <input type="radio" id="chef-full" name="portion" value="full" checked class="portion-input">
-                                    <label for="chef-full" class="portion-label">Full Portion</label>
-
-                                    <input type="radio" id="chef-half" name="portion" value="half" class="portion-input">
-                                    <label for="chef-half" class="portion-label">Half Portion</label>
-                                </div>
-                                <button type="button" onclick="window.location.href='payment.html'" id="order-btn-chef" class="btn-order" style="margin-top: 1rem;">
-                                    Place Order
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Provider Card 3: Global Grub (Sold Out) -->
-                    <div class="tiffin-card" style="opacity: 0.6;">
-                        <div class="provider-header">
-                            <h3>Global Grub</h3>
-                            <span class="tag" style="background-color: var(--secondary-text);">New Provider</span>
-                        </div>
-
-                        <div class="menu-details">
-                            <p style="font-style: italic; color: var(--platform-accent); margin-bottom: 0.75rem;">Today's Special: Mediterranean Lentil Bowl</p>
-                            <div class="menu-item"><span>Lemon-Garlic Lentils</span><span>$2.50</span></div>
-                            <div class="menu-item"><span>Pita Bread (2 Pcs)</span><span>$1.00</span></div>
-                            <div class="menu-item"><span>Tzatziki Dip</span><span>$1.00</span></div>
-                            <div class="menu-item" style="font-weight: 700; margin-top: 1rem; color: var(--primary-text);"><span>Total Full Portion Price:</span><span>$4.50</span></div>
-                        </div>
-
-                        <div id="stock-global" class="stock-info low" style="color: var(--red-alert);">
-                            Tiffins Remaining: 0 / 75 - SOLD OUT
-                        </div>
-
-                        <div class="ordering-controls">
-                            <form id="form-global">
-                                <div class="portion-selection">
-                                    <input type="radio" id="global-full" name="portion" value="full" checked class="portion-input" disabled>
-                                    <label for="global-full" class="portion-label" style="opacity: 0.7;">Full Portion</label>
-
-                                    <input type="radio" id="global-half" name="portion" value="half" class="portion-input" disabled>
-                                    <label for="global-half" class="portion-label" style="opacity: 0.7;">Half Portion</label>
-                                </div>
-                                <button type="button" onclick="handleOrder('global', 'Global Grub')" id="order-btn-global" class="btn-order" style="margin-top: 1rem;" disabled>
-                                    Sold Out
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
     <footer id="footer">
         <div class="container">
             <p>&copy; 2025 TiffinConnect. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Custom Modal/Message Box (Replaces alert()) -->
     <div id="custom-message-box">
         <div class="message-box-content shadow-2xl">
             <h3>Order Status</h3>
@@ -482,13 +369,6 @@
     </div>
 
     <script>
-        // --- Simulated Real-time Stock Data ---
-        const stockData = {
-            riya: { current: 78, max: 100 },
-            chef: { current: 12, max: 50 },
-            global: { current: 0, max: 75 }
-        };
-
         // --- Custom Message Box Functions (Replaces alert()) ---
         function showMessage(message) {
             const messageBox = document.getElementById('custom-message-box');
@@ -500,98 +380,34 @@
             document.getElementById('custom-message-box').style.display = 'none';
         }
 
-        // --- Stock Update and UI Rendering ---
-        
-        /**
-         * Updates the UI for a specific provider based on current stock.
-         * @param {string} providerId - ID of the provider ('riya', 'chef', 'global').
-         */
-        function updateUI(providerId) {
-            const data = stockData[providerId];
-            const stockElement = document.getElementById(`stock-${providerId}`);
-            const orderButton = document.getElementById(`order-btn-${providerId}`);
-
-            stockElement.textContent = `Tiffins Remaining: ${data.current} / ${data.max}`;
+        // --- Simulated Order Handler (Needs Backend Integration for real orders) ---
+        function handleOrder(providerID, mealName) {
+            // NOTE: For a real app, this would send a POST request to your server
+            // to decrement stock and create the order.
             
-            // Highlight low stock
-            if (data.current <= 15 && data.current > 0) {
-                stockElement.classList.add('low');
-            } else {
-                stockElement.classList.remove('low');
-            }
-
-            // Handle sold out state
-            if (data.current <= 0) {
-                stockElement.textContent = `Tiffins Remaining: 0 / ${data.max} - SOLD OUT`;
-                orderButton.disabled = true;
-                orderButton.textContent = 'Sold Out';
-                document.querySelector(`#form-${providerId}`).closest('.tiffin-card').style.opacity = '0.6';
-                
-                // Disable portion inputs
-                document.querySelectorAll(`#form-${providerId} .portion-input`).forEach(input => {
-                    input.disabled = true;
-                });
-
-            } else {
-                orderButton.disabled = false;
-                orderButton.textContent = 'Place Order';
-                document.querySelector(`#form-${providerId}`).closest('.tiffin-card').style.opacity = '1';
-                
-                // Enable portion inputs
-                document.querySelectorAll(`#form-${providerId} .portion-input`).forEach(input => {
-                    input.disabled = false;
-                });
-            }
-        }
-
-        /**
-         * Handles the order click, simulates processing, and updates stock.
-         * @param {string} providerId - ID of the provider.
-         * @param {string} providerName - The display name of the provider.
-         */
-        function handleOrder(providerId, providerName) {
-            const data = stockData[providerId];
-            const form = document.getElementById(`form-${providerId}`);
-            const selectedPortionInput = form.querySelector('input[name="portion"]:checked');
-            
-            if (!selectedPortionInput) {
-                showMessage('Please select a portion size (Full or Half) before ordering.');
-                return;
-            }
-            
-            const selectedPortion = selectedPortionInput.value;
-
-
-            if (data.current <= 0) {
-                showMessage(`Sorry, **${providerName}**'s tiffins have just sold out! Please select another meal.`);
-                updateUI(providerId);
-                return;
-            }
-
-            // Simulate order processing and decrement stock
-            data.current -= 1; 
-
-            // Update UI immediately
-            updateUI(providerId);
-
-            // Show confirmation
+            // Redirecting to payment.html (simulating a successful selection)
             const message = `
-                <p>Order Placed! You successfully secured a **${selectedPortion} portion** tiffin from **${providerName}**.</p>
-                <p style="font-style: italic; color: var(--green-success);">Tiffin confirmed! We will notify you when it is out for delivery.</p>
+                <p>Preparing checkout for **${mealName}**.</p>
+                <p style="font-style: italic; color: var(--platform-accent);">Redirecting to secure payment...</p>
             `;
             showMessage(message);
+
+            // In a real app, you'd navigate after confirming meal selection
+            setTimeout(() => {
+                window.location.href = 'payment.html'; 
+            }, 1500);
         }
 
         // --- Simulated Cutoff Timer ---
         function startCutoffTimer() {
-            // Set cutoff time (e.g., 9:00 AM today or tomorrow)
+            // Logic for the countdown timer remains the same
             const now = new Date();
             let cutoff = new Date(now);
-            
+
             cutoff.setHours(9, 0, 0, 0); // 9:00 AM
 
             if (now.getTime() > cutoff.getTime()) {
-                cutoff.setDate(cutoff.getDate() + 1); // Set for tomorrow
+                cutoff.setDate(cutoff.getDate() + 1);
             }
 
             const timerElement = document.getElementById('cutoff-time-display');
@@ -605,8 +421,7 @@
                     clearInterval(interval);
                     bannerElement.style.backgroundColor = 'var(--red-alert)';
                     bannerElement.textContent = 'Ordering is closed for today. Check back tomorrow at 9:00 AM!';
-                    
-                    // Disable all order buttons after cutoff
+
                     document.querySelectorAll('.btn-order').forEach(btn => {
                         btn.disabled = true;
                         btn.textContent = 'Cutoff Passed';
@@ -618,30 +433,179 @@
                 const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-                const timeString = 
-                    String(hours).padStart(2, '0') + ':' + 
-                    String(minutes).padStart(2, '0') + ':' + 
+                const timeString =
+                    String(hours).padStart(2, '0') + ':' +
+                    String(minutes).padStart(2, '0') + ':' +
                     String(seconds).padStart(2, '0');
-                
+
                 timerElement.textContent = timeString;
 
             }, 1000);
         }
 
+        // --- Mock Data Set (Harmonized with MongoDB data for consistency) ---
+        const mockRestaurants = [
+            {
+                "_id": "60a4f6d3f2a8c3d8e5f1b2c3",
+                "restaurantId": 1,
+                "name": "Terna Canteen",
+                "location": "Terna College Campus",
+                "cuisine": ["Indian", "North Indian"],
+                "isVerified": true,
+                "dailyLimits": { "totalCapacity": 100, "available": 85, "cutoffTime": "09:00" },
+                "menu": [
+                    {"mealName": "Veg Thali", "price": 400.00, "portion": "Full"},
+                    {"mealName": "Veg Thali", "price": 250.00, "portion": "Half"}
+                ]
+            },
+            {
+                "_id": "60a4f6d3f2a8c3d8e5f1b2c4",
+                "restaurantId": 2,
+                "name": "Alishan Tiffin Service",
+                "location": "2nd Lane after Terna Hospital",
+                "cuisine": ["Maharashtrian", "Home Style"],
+                "isVerified": true,
+                "dailyLimits": { "totalCapacity": 50, "available": 40, "cutoffTime": "09:30" },
+                "menu": [
+                    {"mealName": "Puri Bhaji Meal", "price": 180.00, "portion": "Full"},
+                    {"mealName": "Dal Roti Box", "price": 120.00, "portion": "Half"}
+                ]
+            },
+            {
+                "_id": "60a4f6d3f2a8c3d8e5f1b2c5",
+                "restaurantId": 3,
+                "name": "Madheshwar Cafe",
+                "location": "Opposite Railway Station , Nerul West",
+                "cuisine": ["Chinese", "Fast Food"],
+                "isVerified": false,
+                "dailyLimits": { "totalCapacity": 200, "available": 10, "cutoffTime": "10:00" }, // Low Stock Example
+                "menu": [
+                    {"mealName": "Noodle Combo", "price": 320.00, "portion": "Full"},
+                    {"mealName": "Fried Rice Box", "price": 200.00, "portion": "Half"}
+                ]
+            },
+            {
+                "_id": "60a4f6d3f2a8c3d8e5f1b2c6",
+                "restaurantId": 4,
+                "name": "Hotel Tirupati",
+                "location": "Opposite Railway Station , Nerul East",
+                "cuisine": ["South Indian", "Kerala Style"],
+                "isVerified": true,
+                "dailyLimits": { "totalCapacity": 80, "available": 0, "cutoffTime": "08:45" }, // Sold Out Example
+                "menu": [
+                    {"mealName": "Idli Sambar Tiffin", "price": 150.00, "portion": "Half"},
+                    {"mealName": "Rice and Curry Meal", "price": 280.00, "portion": "Full"}
+                ]
+            },
+            {
+                "_id": "60a4f6d3f2a8c3d8e5f1b2c7",
+                "restaurantId": 5,
+                "name": "Dwarka Restaurant",
+                "location": "Near Railway Station south gate",
+                "cuisine": ["Street Food", "Vada Pav"],
+                "isVerified": true,
+                "dailyLimits": { "totalCapacity": 120, "available": 110, "cutoffTime": "09:15" },
+                "menu": [
+                    {"mealName": "Pav Bhaji Tiffin", "price": 220.00, "portion": "Full"},
+                    {"mealName": "Vada Pav Combo", "price": 100.00, "portion": "Half"}
+                ]
+            }
+        ];
+
+        // --- DYNAMIC DATA RENDER ---
+
+        async function fetchAndDisplayRestaurants() {
+            const container = document.getElementById('listings-grid-container');
+
+            // --- Replaced API Fetch with Mock Data for demonstration ---
+            // In a real app, use: const response = await fetch('http://localhost:3000/api/restaurants');
+            // const restaurants = await response.json();
+            const restaurants = mockRestaurants; 
+
+            // **CLEAR the "Loading..." message**
+            container.innerHTML = '';
+
+            // Loop through the received data and create fully styled Tiffin Cards
+            restaurants.forEach(restaurant => {
+
+                // --- 1. Menu Items HTML Generation (Currency fixed here) ---
+                const menuHtml = restaurant.menu.map(item => `
+                    <div class="menu-item">
+                        <span>${item.mealName} (${item.portion})</span>
+                        <span>Rs.${item.price.toFixed(2)}</span> <!-- FIXED CURRENCY SYMBOL -->
+                    </div>
+                `).join('');
+
+                // --- 2. Calculate Total Price ---
+                // For simplicity, we'll use the price of the first item in the menu list as the "main meal price" for the button logic
+                const totalFullPrice = restaurant.menu[0] ? restaurant.menu[0].price.toFixed(2) : 0.00;
+                const mealNameForButton = restaurant.menu[0] ? restaurant.menu[0].mealName : 'Meal';
+
+
+                // --- 3. Determine Stock Status & Styling ---
+                const providerID = restaurant._id;
+                const isSoldOut = restaurant.dailyLimits.available <= 0;
+                const isLowStock = restaurant.dailyLimits.available > 0 && restaurant.dailyLimits.available <= (restaurant.dailyLimits.totalCapacity * 0.2); // Low stock if <= 20%
+                
+                const stockClass = isLowStock ? 'stock-info low' : 'stock-info';
+                const cardOpacity = isSoldOut ? 'opacity: 0.6;' : '';
+                const buttonText = isSoldOut ? 'Sold Out' : `Order Now (Rs.${totalFullPrice})`;
+                const tagText = restaurant.isVerified ? 'Verified Partner' : 'Unverified';
+                const tagClass = restaurant.isVerified ? 'tag' : 'tag' + ' ' + 'low'; // Using low class for red if unverified
+
+                // --- 4. Build the Full Card HTML (using your tiffin-card structure) ---
+                const cardHtml = `
+                    <div class="tiffin-card" id="card-${providerID}" style="${cardOpacity}">
+                        <div class="provider-header">
+                            <h3>${restaurant.name}</h3>
+                            <span class="${tagClass}" style="${restaurant.isVerified ? '' : 'background-color: var(--red-alert);'}">${tagText}</span>
+                        </div>
+
+                        <div class="menu-details">
+                            <p style="font-style: italic; color: var(--platform-accent); margin-bottom: 0.75rem;">Cuisine: ${restaurant.cuisine.join(', ')}</p>
+                            ${menuHtml}
+                            <div class="menu-item" style="font-weight: 700; margin-top: 1rem; color: var(--primary-text);">
+                                <span>Main Meal Price:</span><span>Rs.${totalFullPrice}</span> <!-- ALREADY CORRECT -->
+                            </div>
+                        </div>
+
+                        <div id="stock-${providerID}" class="${stockClass}">
+                            Tiffins Remaining: ${restaurant.dailyLimits.available} / ${restaurant.dailyLimits.totalCapacity}
+                            ${isSoldOut ? ' - SOLD OUT' : ''}
+                        </div>
+
+                        <div class="ordering-controls">
+                            <form id="form-${providerID}">
+                                <div class="portion-selection">
+                                    <input type="radio" id="${providerID}-full" name="portion-${providerID}" value="full" checked class="portion-input" ${isSoldOut ? 'disabled' : ''}>
+                                    <label for="${providerID}-full" class="portion-label" ${isSoldOut ? 'style="opacity: 0.7;"' : ''}>Full Portion</label>
+
+                                    <input type="radio" id="${providerID}-half" name="portion-${providerID}" value="half" class="portion-input" ${isSoldOut ? 'disabled' : ''}>
+                                    <label for="${providerID}-half" class="portion-label" ${isSoldOut ? 'style="opacity: 0.7;"' : ''}>Half Portion</label>
+                                </div>
+                                <button type="button" onclick="handleOrder('${providerID}', '${restaurant.name} - ${mealNameForButton}')" id="order-btn-${providerID}" class="btn-order" style="margin-top: 1rem;" ${isSoldOut ? 'disabled' : ''}>
+                                    ${buttonText}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        }
+
 
         // --- Initialization on Load ---
         document.addEventListener('DOMContentLoaded', () => {
-             // Initialize Modal state
-             document.getElementById('custom-message-box').style.display = 'none';
+            // Initialize Modal state
+            document.getElementById('custom-message-box').style.display = 'none';
 
-             // Initialize the UI for all providers
-             Object.keys(stockData).forEach(updateUI);
+            // Start the cutoff timer simulation
+            startCutoffTimer();
 
-             // Start the cutoff timer simulation
-             startCutoffTimer();
+            // START FETCHING DYNAMIC DATA (using mock data)
+            fetchAndDisplayRestaurants();
         });
     </script>
 </body>
 </html>
-
-
