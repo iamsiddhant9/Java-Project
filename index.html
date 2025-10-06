@@ -159,7 +159,7 @@
             min-height: 85vh;
             position: relative; /* Needed for absolute positioning of ::before */
             overflow: hidden; /* Important for containing the absolute pseudo-element */
-            
+            background-color: black;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -179,7 +179,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            opacity: 0.3; /* Adjusted opacity here */
+            opacity: 0.4; /* Adjusted opacity here */
             z-index: 1; /* Place the background layer underneath the content */
         }
         
@@ -206,13 +206,13 @@
         .hero-subtitle {
             font-size: 1.25rem;
             /* CHANGED: Set a darker, more visible text color */
-            color: #333; 
+            color: white; 
             margin-bottom: 2.5rem;
             max-width: 56rem; /* Adjust later */
             margin-left: auto;
             margin-right: auto;
             /* ADDED: Shadow for contrast against light/busy background */
-            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+            text-shadow: 1px 1px 1px rgba(30, 28, 28, 0.5);
         }
 
         .hero-cta-group a, .hero-cta-group button {
@@ -589,7 +589,7 @@
                 margin: 5px;
                 /* ADDED: Shadow for contrast */
                 text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
-                color: #333; /* Ensuring typewriter text is dark */
+                color: white; /* Ensuring typewriter text is dark */
             }
         }
         .cursor {
@@ -597,8 +597,8 @@
             font-size: 28px;
             animation: blink 1s infinite;
             /* ADDED: Shadow for contrast */
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); 
-            color: #333; /* Ensuring cursor is dark */
+            text-shadow: 1px 1px 2px rgba(17, 17, 17, 0.7); 
+            color: white; /* Ensuring cursor is dark */
         }
 
         @keyframes blink {
