@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusCravings - Secure Payment</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        :root {
+            --light-bg: #dee0e7;
+            --platform-accent: #a24ae2;
+            --primary-text: #733dd5;
+            --secondary-text: #6e5f7a;
+            --max-width: 1280px;
+            --card-bg: white;
+            --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --success-green: #10b981; /* Tailwind green-500 */
+        }
+
+        /* --- Global Styles from Main Page --- */
+        body {
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            background-color: var(--light-bg);
+            color: var(--primary-text);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem; /* 16px */
+            padding-right: 1rem; /* 16px */
+        }
+        
+        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .rounded-xl { border-radius: 0.75rem; }
+        .flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+        .text-center { text-align: center; }
+
+        /* --- Navbar Styles (Minimal for sub-page) --- */
+        #navbar {
+            background-color: rgba(253, 252, 252, 0.95);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 4rem; /* 64px */
+        }
+
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            color: var(--platform-accent);
+            text-decoration: none;
+        }
+        
+        /* --- Payment Page Specific Styles --- */
+        #payment-section {
+            padding: 3rem 1rem;
+        }
+
+        .payment-grid {
+            display: grid;
+            gap: 2rem;
+            max-width: 48rem; /* Custom max-width for content */
+            margin: 0 auto;
+        }
+
+        .payment-card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-subtle);
+            border-top: 4px solid var(--platform-accent);
+        }
+
+        .section-heading {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-text);
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Order Summary Styles */
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            color: var(--secondary-text);
+        }
+
+        .summary-total {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px dashed var(--platform-accent);
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--platform-accent);
+        }
+
+        /* Form and Button Styles (same as before) */
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; font-size: 0.875rem; font-weight: 500; color: #4b5563; margin-bottom: 0.5rem; }
+        .form-input { width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; transition: border-color 0.3s, box-shadow 0.3s; }
+        .form-input:focus { outline: none; border-color: var(--platform-accent); box-shadow: 0 0 0 3px rgba(162, 74, 226, 0.2); }
+        .form-row { display: flex; gap: 1.25rem; }
+        .form-row > .form-group { flex-grow: 1; }
+        .btn-pay { width: 100%; background-color: var(--platform-accent); color: white; font-weight: 700; padding: 0.75rem 1rem; border-radius: 0.5rem; border: none; cursor: pointer; box-shadow: var(--shadow-subtle); transition: background-color 0.3s, transform 0.3s; font-size: 1.125rem; }
+        .btn-pay:hover { background-color: #6d17de; transform: scale(1.01); }
+        
+        /* Message Box from main page */
+        #custom-message-box {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        /* --- Full Screen Green Flash Overlay --- */
+        #green-flash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--success-green);
+            z-index: 199; /* Higher than animation */
+            opacity: 0;
+            display: none;
+        }
+
+        /* --- Payment Success Animation Styles --- */
+        #payment-success-animation {
+            position: fixed;
+            inset: 0;
+            /* Use a semi-transparent black background to make the checkmark pop */
+            background-color: rgba(0, 0, 0, 0.8); 
+            display: none; /* Initially hidden */
+            align-items: center;
+            justify-content: center;
+            z-index: 150;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .success-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--success-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0);
+            animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+
+        .success-checkmark {
+            width: 60px;
+            height: 60px;
+            stroke-width: 6;
+            stroke: white;
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            /* Animation timing adjusted for a smoother combined effect */
+            animation: drawCheck 0.5s 0.3s forwards ease-out;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes drawCheck {
+            100% { stroke-dashoffset: 0; }
+        }
+
+        /* Message Box styles (same as before) */
+        .message-box-content { background-color: white; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); max-width: 24rem; width: 90%; transform: scale(1); transition: transform 0.3s; }
+        .message-box-content h3 { font-size: 1.25rem; font-weight: 700; color: var(--primary-text); margin-bottom: 1rem; }
+        .message-box-content p { color: var(--secondary-text); margin-bottom: 1.5rem; }
+        .btn-modal-close { width: 100%; background-color: var(--platform-accent); color: white; font-weight: 600; padding: 0.5rem 1rem; border-radius: 0.5rem; border: none; cursor: pointer; transition: background-color 0.3s; }
+        .btn-modal-close:hover { background-color: #6d17de; }
+
+        @media (min-width: 768px) {
+            .payment-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .payment-form-card { grid-column: 1 / 2; }
+            .order-summary-card { grid-column: 2 / 3; }
+        }
+    </style>
+</head>
+<body class="bg-light-bg text-primary-text font-sans antialiased">
+    <audio id="success-sound" preload="auto">
+        <source src="YOUR_SUCCESS_SOUND_URL.mp3" type="audio/mp3">
+        </audio>
+
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="index.html" class="nav-logo">
+                    Campus Cravings
+                </a>
+                <a href="order.html" class="btn-primary" style="text-decoration: none; padding: 0.5rem 1rem; border-radius: 9999px;">
+                    Back to Order
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section id="payment-section">
+            <div class="container">
+                <h1 class="text-center" style="font-size: 2.25rem; font-weight: 700; margin-bottom: 2.5rem; color: var(--platform-accent);">
+                    Secure Checkout 🔒
+                </h1>
+                <div class="payment-grid">
+                    <div class="payment-card payment-form-card shadow-xl">
+                        <h2 class="section-heading">Payment Information</h2>
+                        <form id="payment-form">
+                            <div class="form-group">
+                                <label for="card-holder" class="form-label">Card Holder Name</label>
+                                <input type="text" id="card-holder" name="card-holder" required placeholder="John Doe"
+                                       class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="card-number" class="form-label">Card Number</label>
+                                <input type="text" id="card-number" name="card-number" required placeholder="XXXX XXXX XXXX XXXX"
+                                       maxlength="19" class="form-input">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiry-date" class="form-label">Expiry Date (MM/YY)</label>
+                                    <input type="text" id="expiry-date" name="expiry-date" required placeholder="MM/YY"
+                                           maxlength="5" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv" class="form-label">CVV</label>
+                                    <input type="password" id="cvv" name="cvv" required placeholder="***"
+                                           maxlength="4" class="form-input">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-pay">
+                                Pay ₹450.00 Now
+                            </button>
+                            <p class="text-center" style="font-size: 0.875rem; color: #9ca3af; margin-top: 1rem;">
+                                Payments are secured with 256-bit SSL encryption.
+                            </p>
+                        </form>
+                    </div>
+
+                    <div class="payment-card order-summary-card shadow-xl">
+                        <h2 class="section-heading">Order Summary</h2>
+                        
+                        <div class="summary-item">
+                            <span>Tiffin Provider:</span>
+                            <span style="font-weight: 600;">Terna Canteen</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Meal:</span>
+                            <span style="font-weight: 600;">Full Portion Veg Thali</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Date & Cutoff:</span>
+                            <span style="font-weight: 600;">Today, 9:00 AM</span>
+                        </div>
+                        <div class="summary-item" style="margin-top: 1.5rem;">
+                            <span>Subtotal:</span>
+                            <span style="color: var(--primary-text); font-weight: 500;">₹400.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Platform Fee:</span>
+                            <span style="color: var(--primary-text); font-weight: 500;">₹30.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Delivery Fee:</span>
+                            <span style="color: var(--primary-text); font-weight: 500;">₹20.00</span>
+                        </div>
+
+                        <div class="summary-total">
+                            <span>TOTAL TO PAY:</span>
+                            <span>₹450.00</span>
+                        </div>
+
+                        <p style="font-size: 0.9rem; margin-top: 2rem; color: var(--secondary-text); line-height: 1.4;">
+                            The full order details, including the designated campus drop-off point, will be emailed to you upon successful payment.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer" style="background-color: var(--primary-text); color: white; padding: 1.5rem 1rem;">
+        <div class="container text-center">
+            <p>&copy; 2025 CampusCravings. All rights reserved.</p>
+        </div>
+    </footer>
+    <audio id="success-sound" preload="auto">
+        <source src="paymentsound.mp3" type="audio/mp3">
+    </audio>
+
+    <div id="green-flash-overlay"></div>
+
+    <div id="payment-success-animation">
+        <div class="success-circle">
+            <svg class="success-checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <path fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+        </div>
+    </div>
+    
+    <div id="custom-message-box" class="fixed inset-0 hidden" style="display: none;">
+        <div class="message-box-content shadow-xl">
+            <h3>Notification</h3>
+            <p id="message-text"></p>
+            <button onclick="hideMessage()" class="btn-modal-close">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- Custom Message Box Functions (from main page) ---
+        function showMessage(message, success = false) {
+            const messageBox = document.getElementById('custom-message-box');
+            const messageTitle = messageBox.querySelector('h3');
+            document.getElementById('message-text').textContent = message;
+            
+            if (success) {
+                messageTitle.textContent = 'Order Confirmed! 🎉';
+                messageTitle.style.color = 'var(--success-green)'; 
+            } else {
+                messageTitle.textContent = 'Notification';
+                messageTitle.style.color = 'var(--primary-text)';
+            }
+            messageBox.style.display = 'flex'; 
+        }
+
+        function hideMessage() {
+            document.getElementById('custom-message-box').style.display = 'none';
+        }
+
+        /**
+         * Plays the success sound effect.
+         * Note: Modern browsers require a user interaction (like a button click)
+         * before they allow media to play, so this is triggered by the submit button.
+         */
+        /**
+ * Plays the success sound effect reliably.
+ */
+/**
+ * Plays the success sound effect reliably.
+ */
+function playSuccessSound() {
+    const sound = document.getElementById('success-sound');
+    if (sound) {
+        // 1. Ensure the audio is at the beginning before playing
+        sound.currentTime = 0; 
+        
+        // 2. Attempt to play and handle the promise rejection if blocked
+        sound.play().then(() => {
+            // Audio successfully played (or is playing)
+            console.log("Success sound started.");
+        }).catch(error => {
+            // This catches the Autoplay Policy block or any interruption (like your previous pause())
+            // It's best to silently fail here, as we can't force audio playback.
+            console.warn("Autoplay was prevented or playback failed:", error.name);
+            // Optional: You can try to stop it just in case a partial play request is hanging
+            if (error.name === "NotAllowedError" || error.name === "AbortError") {
+                 sound.pause(); 
+            }
+        });
+    }
+}
+        // --- Form Submission Handler for Payment ---
+        const paymentForm = document.getElementById('payment-form');
+        const successAnimation = document.getElementById('payment-success-animation');
+        const greenFlash = document.getElementById('green-flash-overlay');
+        
+        paymentForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Simple validation
+            const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
+            const expiryDate = document.getElementById('expiry-date').value;
+            const cvv = document.getElementById('cvv').value;
+            const cardHolder = document.getElementById('card-holder').value;
+
+            if (cardNumber.length < 16 || expiryDate.length !== 5 || cvv.length < 3 || cardHolder.trim() === "") {
+                showMessage('Please enter valid card details.', false);
+                return;
+            }
+
+            // Start Processing and Animation
+            const payButton = event.target.querySelector('.btn-pay');
+            payButton.textContent = 'Processing...';
+            payButton.disabled = true;
+
+            // 1. Play Sound
+            playSuccessSound();
+
+            // 2. Trigger Green Flash
+            greenFlash.style.display = 'block';
+            setTimeout(() => {
+                // Flash on (set opacity to 1, fast transition)
+                greenFlash.style.transition = 'opacity 0.1s ease-in';
+                greenFlash.style.opacity = '1';
+                
+                // Flash off (fade out quickly)
+                setTimeout(() => {
+                    greenFlash.style.transition = 'opacity 0.3s ease-out';
+                    greenFlash.style.opacity = '0';
+                }, 100); 
+
+                // Hide it fully after fade out
+                setTimeout(() => {
+                    greenFlash.style.display = 'none';
+                }, 400); 
+            }, 50); // Small initial delay to ensure display:block registers
+
+            // 3. Show the Checkmark Animation overlay
+            successAnimation.style.display = 'flex';
+            setTimeout(() => {
+                 successAnimation.style.opacity = '1';
+            }, 200); // Delay for flash to finish
+
+            // 4. Wait for animation to complete (approx 1.8 seconds after animation starts)
+            setTimeout(() => {
+                
+                // 5. Hide animation overlay
+                successAnimation.style.opacity = '0';
+                setTimeout(() => {
+                    successAnimation.style.display = 'none';
+                    // Reset the animation class state for next time
+                    successAnimation.querySelector('.success-circle').style.transform = 'scale(0)';
+                    successAnimation.querySelector('.success-checkmark').style.strokeDashoffset = '166';
+                }, 500); // Wait for fade out transition
+
+                // 6. Show the success modal
+                showMessage(
+                    `Payment of ₹450.00 successful! Your order has been placed with Terna Canteen. A confirmation email and drop-off instructions have been sent to your registered email address.`, 
+                    true
+                );
+                
+                // 7. Reset form and button
+                paymentForm.reset();
+                payButton.textContent = 'Pay ₹450.00 Now';
+                payButton.disabled = false;
+                
+            }, 2500); // Total processing time 
+        });
+
+        // Add auto-formatting functions (same as before)
+        document.getElementById('card-number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) { formattedValue += ' '; }
+                formattedValue += value[i];
+            }
+            e.target.value = formattedValue.trim();
+        });
+
+        document.getElementById('expiry-date').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 2) { value = value.substring(0, 2) + '/' + value.substring(2); }
+            if (value.length > 5) { value = value.substring(0, 5); }
+            e.target.value = value;
+        });
+
+        // Initialize modal and animation hidden state on load
+        document.addEventListener('DOMContentLoaded', () => {
+             document.getElementById('custom-message-box').style.display = 'none';
+             document.getElementById('payment-success-animation').style.display = 'none';
+             document.getElementById('green-flash-overlay').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
