@@ -340,161 +340,139 @@
         </div>
     </div>
 
-    <script>
-        // --- Custom Message Box Functions (from main page) ---
-        function showMessage(message, success = false) {
-            const messageBox = document.getElementById('custom-message-box');
-            const messageTitle = messageBox.querySelector('h3');
-            document.getElementById('message-text').textContent = message;
-            
-            if (success) {
-                messageTitle.textContent = 'Order Confirmed! 🎉';
-                messageTitle.style.color = 'var(--success-green)'; 
-            } else {
-                messageTitle.textContent = 'Notification';
-                messageTitle.style.color = 'var(--primary-text)';
-            }
-            messageBox.style.display = 'flex'; 
-        }
-
-        function hideMessage() {
-            document.getElementById('custom-message-box').style.display = 'none';
-        }
-
-        /**
-         * Plays the success sound effect.
-         * Note: Modern browsers require a user interaction (like a button click)
-         * before they allow media to play, so this is triggered by the submit button.
-         */
-        /**
- * Plays the success sound effect reliably.
- */
-/**
- * Plays the success sound effect reliably.
- */
-function playSuccessSound() {
-    const sound = document.getElementById('success-sound');
-    if (sound) {
-        // 1. Ensure the audio is at the beginning before playing
-        sound.currentTime = 0; 
+   <script>
+    // --- Message Box Functions (kept but unused, as we are redirecting) ---
+    function showMessage(message, success = false) {
+        // This function is no longer called for success, but kept for error messages.
+        const messageBox = document.getElementById('custom-message-box');
+        const messageTitle = messageBox.querySelector('h3');
+        document.getElementById('message-text').textContent = message;
         
-        // 2. Attempt to play and handle the promise rejection if blocked
-        sound.play().then(() => {
-            // Audio successfully played (or is playing)
-            console.log("Success sound started.");
-        }).catch(error => {
-            // This catches the Autoplay Policy block or any interruption (like your previous pause())
-            // It's best to silently fail here, as we can't force audio playback.
-            console.warn("Autoplay was prevented or playback failed:", error.name);
-            // Optional: You can try to stop it just in case a partial play request is hanging
-            if (error.name === "NotAllowedError" || error.name === "AbortError") {
-                 sound.pause(); 
-            }
-        });
+        if (success) {
+            messageTitle.textContent = 'Notification'; // Set back to default for errors
+            messageTitle.style.color = 'var(--primary-text)'; 
+        } else {
+            messageTitle.textContent = 'Notification';
+            messageTitle.style.color = 'var(--primary-text)';
+        }
+        messageBox.style.display = 'flex'; 
     }
-}
-        // --- Form Submission Handler for Payment ---
-        const paymentForm = document.getElementById('payment-form');
-        const successAnimation = document.getElementById('payment-success-animation');
-        const greenFlash = document.getElementById('green-flash-overlay');
-        
-        paymentForm.addEventListener('submit', function(event) {
-            event.preventDefault();
 
-            // Simple validation
-            const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
-            const expiryDate = document.getElementById('expiry-date').value;
-            const cvv = document.getElementById('cvv').value;
-            const cardHolder = document.getElementById('card-holder').value;
+    function hideMessage() {
+        document.getElementById('custom-message-box').style.display = 'none';
+    }
 
-            if (cardNumber.length < 16 || expiryDate.length !== 5 || cvv.length < 3 || cardHolder.trim() === "") {
-                showMessage('Please enter valid card details.', false);
-                return;
-            }
+    /**
+     * Plays the success sound effect reliably.
+     */
+    function playSuccessSound() {
+        const sound = document.getElementById('success-sound');
+        if (sound) {
+            sound.currentTime = 0; 
+            
+            sound.play().then(() => {
+                console.log("Success sound started.");
+            }).catch(error => {
+                console.warn("Autoplay was prevented or playback failed:", error.name);
+                if (error.name === "NotAllowedError" || error.name === "AbortError") {
+                     sound.pause(); 
+                }
+            });
+        }
+    }
 
-            // Start Processing and Animation
-            const payButton = event.target.querySelector('.btn-pay');
-            payButton.textContent = 'Processing...';
-            payButton.disabled = true;
+    // --- Form Submission Handler for Payment ---
+    const paymentForm = document.getElementById('payment-form');
+    const successAnimation = document.getElementById('payment-success-animation');
+    const greenFlash = document.getElementById('green-flash-overlay');
+    
+    paymentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-            // 1. Play Sound
-            playSuccessSound();
+        // Simple validation
+        const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
+        const expiryDate = document.getElementById('expiry-date').value;
+        const cvv = document.getElementById('cvv').value;
+        const cardHolder = document.getElementById('card-holder').value;
 
-            // 2. Trigger Green Flash
-            greenFlash.style.display = 'block';
+        if (cardNumber.length < 16 || expiryDate.length !== 5 || cvv.length < 3 || cardHolder.trim() === "") {
+            showMessage('Please enter valid card details.', false);
+            return;
+        }
+
+        // Start Processing and Animation
+        const payButton = event.target.querySelector('.btn-pay');
+        payButton.textContent = 'Processing...';
+        payButton.disabled = true;
+
+        // 1. Play Sound
+        playSuccessSound();
+
+        // 2. Trigger Green Flash
+        greenFlash.style.display = 'block';
+        setTimeout(() => {
+            // Flash on (set opacity to 1, fast transition)
+            greenFlash.style.transition = 'opacity 0.1s ease-in';
+            greenFlash.style.opacity = '1';
+            
+            // Flash off (fade out quickly)
             setTimeout(() => {
-                // Flash on (set opacity to 1, fast transition)
-                greenFlash.style.transition = 'opacity 0.1s ease-in';
-                greenFlash.style.opacity = '1';
-                
-                // Flash off (fade out quickly)
-                setTimeout(() => {
-                    greenFlash.style.transition = 'opacity 0.3s ease-out';
-                    greenFlash.style.opacity = '0';
-                }, 100); 
+                greenFlash.style.transition = 'opacity 0.3s ease-out';
+                greenFlash.style.opacity = '0';
+            }, 100); 
 
-                // Hide it fully after fade out
-                setTimeout(() => {
-                    greenFlash.style.display = 'none';
-                }, 400); 
-            }, 50); // Small initial delay to ensure display:block registers
-
-            // 3. Show the Checkmark Animation overlay
-            successAnimation.style.display = 'flex';
+            // Hide it fully after fade out
             setTimeout(() => {
-                 successAnimation.style.opacity = '1';
-            }, 200); // Delay for flash to finish
+                greenFlash.style.display = 'none';
+            }, 400); 
+        }, 50);
 
-            // 4. Wait for animation to complete (approx 1.8 seconds after animation starts)
+        // 3. Show the Checkmark Animation overlay
+        successAnimation.style.display = 'flex';
+        setTimeout(() => {
+             successAnimation.style.opacity = '1';
+        }, 200);
+
+        // 4. Wait for animation to complete (approx 1.8 seconds after animation starts)
+        setTimeout(() => {
+            
+            // 5. Hide animation overlay
+            successAnimation.style.opacity = '0';
+            
+            // 6. DIRECT REDIRECTION TO HOME PAGE
+            // We give it 500ms to allow the checkmark to visually fade out before leaving the page.
             setTimeout(() => {
-                
-                // 5. Hide animation overlay
-                successAnimation.style.opacity = '0';
-                setTimeout(() => {
-                    successAnimation.style.display = 'none';
-                    // Reset the animation class state for next time
-                    successAnimation.querySelector('.success-circle').style.transform = 'scale(0)';
-                    successAnimation.querySelector('.success-checkmark').style.strokeDashoffset = '166';
-                }, 500); // Wait for fade out transition
+                window.location.href = 'index.html'; 
+            }, 500); 
 
-                // 6. Show the success modal
-                showMessage(
-                    `Payment of ₹450.00 successful! Your order has been placed with Terna Canteen. A confirmation email and drop-off instructions have been sent to your registered email address.`, 
-                    true
-                );
-                
-                // 7. Reset form and button
-                paymentForm.reset();
-                payButton.textContent = 'Pay ₹450.00 Now';
-                payButton.disabled = false;
-                
-            }, 2500); // Total processing time 
-        });
+        }, 2500); // Total processing time (2.5 seconds total processing time before redirect logic starts)
+    });
 
-        // Add auto-formatting functions (same as before)
-        document.getElementById('card-number').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\s/g, '');
-            let formattedValue = '';
-            for (let i = 0; i < value.length; i++) {
-                if (i > 0 && i % 4 === 0) { formattedValue += ' '; }
-                formattedValue += value[i];
-            }
-            e.target.value = formattedValue.trim();
-        });
+    // Add auto-formatting functions (same as before)
+    document.getElementById('card-number').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\s/g, '');
+        let formattedValue = '';
+        for (let i = 0; i < value.length; i++) {
+            if (i > 0 && i % 4 === 0) { formattedValue += ' '; }
+            formattedValue += value[i];
+        }
+        e.target.value = formattedValue.trim();
+    });
 
-        document.getElementById('expiry-date').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 2) { value = value.substring(0, 2) + '/' + value.substring(2); }
-            if (value.length > 5) { value = value.substring(0, 5); }
-            e.target.value = value;
-        });
+    document.getElementById('expiry-date').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 2) { value = value.substring(0, 2) + '/' + value.substring(2); }
+        if (value.length > 5) { value = value.substring(0, 5); }
+        e.target.value = value;
+    });
 
-        // Initialize modal and animation hidden state on load
-        document.addEventListener('DOMContentLoaded', () => {
-             document.getElementById('custom-message-box').style.display = 'none';
-             document.getElementById('payment-success-animation').style.display = 'none';
-             document.getElementById('green-flash-overlay').style.display = 'none';
-        });
-    </script>
+    // Initialize modal and animation hidden state on load
+    document.addEventListener('DOMContentLoaded', () => {
+         document.getElementById('custom-message-box').style.display = 'none';
+         document.getElementById('payment-success-animation').style.display = 'none';
+         document.getElementById('green-flash-overlay').style.display = 'none';
+    });
+</script>
 </body>
+
 </html>
