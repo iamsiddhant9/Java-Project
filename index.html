@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tiffin Connect - Verified Meals</title>
+    <title>CampusCravings - Verified Meals</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
         :root {
-            --light-bg: #f7faff;
+            --light-bg: #dee0e7;
             --platform-accent: #a24ae2;
             --primary-text: #733dd5;
             --secondary-text: #6e5f7a;
@@ -157,12 +157,37 @@
         /* --- Hero Section --- */
         #home {
             min-height: 85vh;
-            background-color: rgb(235, 223, 243);
+            position: relative; /* Needed for absolute positioning of ::before */
+            overflow: hidden; /* Important for containing the absolute pseudo-element */
+            background-color: black;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 5rem 1rem;
             border-bottom: 4px solid rgba(41, 35, 38, 0.2);
+        }
+        
+        /* CSS to apply the background image with reduced opacity */
+        #home::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("bg.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.4; /* Adjusted opacity here */
+            z-index: 1; /* Place the background layer underneath the content */
+        }
+        
+        /* CSS to ensure the content is above the background */
+        .hero-content-wrapper {
+            position: relative;
+            z-index: 2; /* Place the content layer above the background */
+            width: 100%;
         }
 
         .hero-title {
@@ -170,6 +195,9 @@
             font-weight: 600;
             margin-bottom: 1.5rem;
             line-height: 1.2;
+            color: var(--primary-text);
+            /* ADDED: Shadow for contrast against light/busy background */
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); 
         }
         .hero-title span {
             color: var(--platform-accent);
@@ -177,30 +205,31 @@
 
         .hero-subtitle {
             font-size: 1.25rem;
-            color: var(--secondary-text);
+            /* CHANGED: Set a darker, more visible text color */
+            color: white; 
             margin-bottom: 2.5rem;
             max-width: 56rem; /* Adjust later */
             margin-left: auto;
             margin-right: auto;
+            /* ADDED: Shadow for contrast against light/busy background */
+            text-shadow: 1px 1px 1px rgba(30, 28, 28, 0.5);
         }
 
         .hero-cta-group a, .hero-cta-group button {
-    display: inline-block;
-    font-weight: 700;
-    text-decoration: none;
-    padding: 0.75rem 2rem;
-    border-radius: 9999px;
-    margin: 40px;
-    
-    transition: all 0.5s;
-}
-
+            display: inline-block;
+            font-weight: 700;
+            text-decoration: none;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            margin: 40px;
+            
+            transition: all 0.5s;
+        }
 
         .btn-cta-primary {
             background-color: var(--platform-accent);
             color: white;;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            border: none
             
         }
         .btn-cta-primary:hover {
@@ -214,7 +243,6 @@
             color: var(--platform-accent);
             background-color: transparent;
             margin-left: 4px;
-            width: 100
         }
         .btn-cta-secondary:hover {
             background-color: rgba(125, 15, 150, 0.1);
@@ -260,6 +288,9 @@
             color: var(--platform-accent);
             margin-bottom: 1rem;
         }
+        .feature-card:hover .feature-icon-wrapper {
+            color: white; /* Change icon color on hover */
+        }
         .feature-icon-wrapper svg {
             width: 2.5rem;
             height: 2.5rem;
@@ -272,6 +303,9 @@
         }
         .feature-card p {
             color: var(--secondary-text);
+        }
+        .feature-card:hover p {
+            color: #f7faff; /* Change paragraph color on hover */
         }
 
         /* --- Ordering & Delivery Section --- */
@@ -431,7 +465,7 @@
             transition: background-color 0.3s, transform 0.3s;
         }
         .btn-form-submit:hover {
-            background-color: #1e40af;
+            background-color: #6d17de;
             transform: scale(1.01);
         }
 
@@ -508,47 +542,47 @@
             transition: background-color 0.3s;
         }
         .btn-modal-close:hover {
-            background-color: #1e40af;
+            background-color: #6d17de;
         }
-
-        /* --- Custom Typewriter Styles --- */
-        #typewriter {
-            font-size: 28px;
-            font-weight: 400;
-            margin: 5px;
-        }
-        .cursor {
-            display: inline-block;
-            font-size: 28px;
-            animation: blink 1s infinite;
-        }
-        @keyframes blink {
-            0%, 50%, 100% { opacity: 1; }
-            25%, 75% { opacity: 0; }
-        }
-
-        /* --- Loading Spinner CSS (New) --- */
-        #loading-overlay {
+        
+        /* --- Loading Overlay Styles --- */
+        .loading-overlay {
             position: fixed;
-            inset: 0;
-            background-color: rgba(255, 255, 255, 0.9);
-            display: none; /* Hidden by default */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+            z-index: 150; /* Above all other elements, including the modal */
+            display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 200;
+            flex-direction: column;
         }
 
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(162, 74, 226, 0.2); /* platform-accent light */
-            border-top-color: var(--platform-accent);
+        .spinner-container {
+            text-align: center;
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid var(--platform-accent); /* Platform accent color */
             border-radius: 50%;
+            width: 60px;
+            height: 60px;
             animation: spin 1s linear infinite;
+            margin: 0 auto 15px auto;
+        }
+
+        .loading-text {
+            color: var(--primary-text);
+            font-size: 1.25rem;
+            font-weight: 500;
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* --- Media Queries for Responsiveness --- */
@@ -588,6 +622,28 @@
             .list-description {
                 font-size: 18px; /* Adjust if needed for readability */
             }
+
+            #typewriter {
+                font-size: 28px;
+                font-weight: 400;
+                margin: 5px;
+                /* ADDED: Shadow for contrast */
+                text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+                color: white; /* Ensuring typewriter text is dark */
+            }
+        }
+        .cursor {
+            display: inline-block;
+            font-size: 28px;
+            animation: blink 1s infinite;
+            /* ADDED: Shadow for contrast */
+            text-shadow: 1px 1px 2px rgba(17, 17, 17, 0.7); 
+            color: white; /* Ensuring cursor is dark */
+        }
+
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0; }
         }
     </style>
 </head>
@@ -602,9 +658,7 @@
 
                 <div class="nav-desktop-menu">
                     <a href="#features" class="nav-link">Features</a>
-                    <button onclick="startLoadingAndRedirect('order.html')" class="nav-link" style="background: none; border: none;">
-                        Start Ordering
-                    </button>
+                    <a href="javascript:void(0)" onclick="delayedRedirect('order.html', 1000)" class="nav-link">Start Ordering</a>
                     <a href="#delivery" class="nav-link">For Providers</a>
                     <button onclick="window.location.href='login.html'" class="btn-primary">
                         Sign-in
@@ -622,9 +676,9 @@
         <div id="mobile-menu" class="hidden">
             <div class="container">
                 <a href="#features" onclick="toggleMobileMenu()">Features</a>
-                <a href="#ordering" onclick="toggleMobileMenu()">Ordering</a>
+                <a href="javascript:void(0)" onclick="delayedRedirect('order.html', 1000); toggleMobileMenu()">Ordering</a>
                 <a href="#delivery" onclick="toggleMobileMenu()">For Providers</a>
-                <button onclick="startLoadingAndRedirect('order.html'); toggleMobileMenu()" class="btn-primary">
+                <button onclick="delayedRedirect('order.html', 1000); toggleMobileMenu()" class="btn-primary">
                     Start Ordering
                 </button>
             </div>
@@ -633,23 +687,26 @@
 
     <main>
         <section id="home" class="text-center">
+            
             <div class="container">
-                <div class="max-w-5xl mx-auto">
-                    <h1 class="hero-title">
-                        Your <span>One-Stop Platform</span> for Verified Tiffin Meals
-                    </h1>
-                    <p class="hero-subtitle">
-                        Connecting busy individuals and institutions with the best local tiffin providers, managed with daily freshness and reliability.
-                    </p>
-                    <span id="typewriter"></span>
-                    <span class="cursor">|</span>
-                    <div class="hero-cta-group">
-                        <button onclick="startLoadingAndRedirect('order.html')" class="btn-cta-primary">
-                            Find a Meal Today
-                        </button>
-                        <a href="#provider-cta" class="btn-cta-secondary">
-                            Join as a Provider
-                        </a>
+                <div class="hero-content-wrapper"> 
+                    <div class="max-w-5xl mx-auto">
+                        <h1 class="hero-title">
+                            Your <span>One-Stop Platform</span> for Verified Tiffin Meals
+                        </h1>
+                        <p class="hero-subtitle">
+                            Connecting busy individuals and institutions with the best local tiffin providers, managed with daily freshness and reliability.
+                        </p>
+                        <span id="typewriter"></span>
+                        <span class="cursor">|</span>
+                        <div class="hero-cta-group">
+                            <a href="javascript:void(0)" onclick="delayedRedirect('order.html', 1000)" class="btn-cta-primary">
+                                Find a Meal Today
+                            </a>
+                            <a href="#provider-cta" class="btn-cta-secondary">
+                                Join as a Provider
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -755,12 +812,12 @@
                     <div class="form-group">
                         <label for="provider-name" class="form-label">Tiffin Service Name</label>
                         <input type="text" id="provider-name" name="provider-name" required placeholder="Terna Canteen"
-                                class="form-input">
+                               class="form-input">
                     </div>
                     <div class="form-group">
                         <label for="provider-email" class="form-label">Contact Email</label>
                         <input type="email" id="provider-email" name="provider-email" required placeholder="contact@terna.com"
-                                class="form-input">
+                               class="form-input">
                     </div>
                     <button type="submit"
                             class="btn-form-submit">
@@ -790,26 +847,37 @@
             </button>
         </div>
     </div>
-
-    <div id="loading-overlay">
-        <div class="spinner"></div>
+    
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="spinner-container">
+            <div class="loader"></div>
+            <p class="loading-text">Finding the best meals...</p>
+        </div>
     </div>
+
     <script>
         // --- Custom Message Box Functions (Replaces alert()) ---
 
+        /**
+         * Shows a custom message box with the given text.
+         * @param {string} message - The message to display.
+         */
         function showMessage(message) {
             const messageBox = document.getElementById('custom-message-box');
             document.getElementById('message-text').textContent = message;
-            messageBox.style.display = 'flex';
+            messageBox.style.display = 'flex'; // Use style property for show/hide
+        }
+        
+        /**
+         * Hides the custom message box.
+         */
+        function hideMessage() {
+            document.getElementById('custom-message-box').style.display = 'none'; // Use style property for show/hide
         }
 
-        function hideMessage() {
-            document.getElementById('custom-message-box').style.display = 'none';
-        }
 
         // --- Typewriter Effect Logic ---
-
-        const words = ["Made by", "Siddhant Sonarkar", "Order now", "See today's Menu", "Compare every Restaurant"];
+        const words = ["Made by", "Siddhant Sonarkar", "Order Now", "Affordable Meals", "Daily Menu update"];
         let i = 0; // word index
         let j = 0; // character index
         let currentWord = '';
@@ -839,14 +907,18 @@
                 setTimeout(type, isDeleting ? speed / 2 : speed);
             }
         }
-        
-        type();
+
+        type(); // Start the typewriter effect
+
 
         // --- Mobile Menu Toggle Logic ---
 
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
 
+        /**
+         * Toggles the visibility of the mobile menu.
+         */
         function toggleMobileMenu() {
             if (mobileMenu.classList.contains('hidden')) {
                 mobileMenu.classList.remove('hidden');
@@ -859,8 +931,13 @@
 
         mobileMenuButton.addEventListener('click', toggleMobileMenu);
 
+
         // --- Form Submission Handler (Simulates provider registration) ---
 
+        /**
+         * Handles the form submission event for provider registration.
+         * @param {Event} event - The form submission event.
+         */
         function handleFormSubmission(event) {
             event.preventDefault();
 
@@ -883,26 +960,27 @@
             nameInput.value = '';
             emailInput.value = '';
         }
-
-        // *** NEW LOADING & REDIRECT FUNCTION ADDED HERE ***
+        
+        // --- NEW: Loading and Redirect Function ---
+        
         /**
-         * Shows the loading screen for a duration, then redirects to the target page.
-         * @param {string} url - The URL to redirect to (e.g., 'order.html').
+         * Shows a loading screen for a duration and then redirects.
+         * @param {string} url - The URL to redirect to.
+         * @param {number} delayMs - The delay in milliseconds.
          */
-        function startLoadingAndRedirect(url) {
+        function delayedRedirect(url, delayMs) {
             const loadingOverlay = document.getElementById('loading-overlay');
-            const delay = 700; // 2000 milliseconds = 2 seconds
-
-            // 1. Show the loading animation
+            
+            // Show the loading overlay 
+            loadingOverlay.classList.remove('hidden');
             loadingOverlay.style.display = 'flex';
 
-            // 2. Wait for the specified delay, then redirect
+            // Wait for the specified delay
             setTimeout(() => {
+                // Redirect the user
                 window.location.href = url;
-            }, delay);
+            }, delayMs);
         }
-        // **************************************************
-
 
         // Initialize mobile menu state correctly on load
         document.addEventListener('DOMContentLoaded', () => {
@@ -914,9 +992,11 @@
 
              // Handle initial state of the modal
              document.getElementById('custom-message-box').style.display = 'none';
+             
+             // Ensure the loading overlay is hidden on load
+             document.getElementById('loading-overlay').style.display = 'none';
         });
 
     </script>
 </body>
 </html>
-
